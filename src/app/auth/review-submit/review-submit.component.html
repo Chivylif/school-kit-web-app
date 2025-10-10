@@ -1,0 +1,316 @@
+<div class="min-h-screen bg-slate-50 flex">
+  <!-- Decorative sidebar -->
+  <aside
+    class="relative w-[360px] bg-gradient-to-br from-[#0B3F40] via-[#0E4E52] to-[#072829] text-white flex flex-col overflow-hidden"
+  >
+    <div class="absolute -left-16 -top-24 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
+    <div class="absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-teal-300/10 blur-3xl"></div>
+
+    <div class="relative z-10 flex-1 px-10 py-12 flex flex-col">
+      <div class="flex items-center gap-3 mb-12">
+        <div
+          class="bg-yellow-400/90 text-teal-900 h-11 w-11 grid place-content-center rounded-2xl shadow-lg shadow-yellow-500/20"
+        >
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.84L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.84l-7-3z"
+            />
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.45em] text-teal-100/70">School Kit</p>
+          <p class="text-lg font-semibold -mt-1">Institution Onboarding</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <p class="text-xl font-semibold leading-8">
+          Review every detail before launching your institution experience.
+        </p>
+        <p class="text-sm text-teal-100/70 leading-relaxed">
+          Confirm that the information below is correct. You can jump back to make quick changes
+          before submitting.
+        </p>
+      </div>
+
+      <nav class="mt-12 space-y-8">
+        <div *ngFor="let step of steps; let index = index" class="flex items-start">
+          <div class="flex flex-col items-center mr-4">
+            <div
+              class="h-10 w-10 rounded-2xl grid place-content-center text-sm font-bold transition-all duration-300"
+              [ngClass]="{
+                'bg-yellow-400 text-teal-900 shadow-lg shadow-yellow-500/30':
+                  index === activeStepIndex,
+                'bg-white/10 text-white/90 border border-white/20': index !== activeStepIndex
+              }"
+            >
+              {{ index + 1 | number : '2.0-0' }}
+            </div>
+            <div
+              *ngIf="index < steps.length - 1"
+              class="flex-1 w-px mt-4 mb-4"
+              [ngClass]="{
+                'bg-yellow-300/70': index < activeStepIndex,
+                'bg-white/15': index >= activeStepIndex
+              }"
+            ></div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <span class="text-xs uppercase tracking-[0.32em] text-teal-100/60"
+              >Step {{ index + 1 }}</span
+            >
+            <h3
+              class="text-lg font-semibold"
+              [ngClass]="{
+                'text-yellow-300': index === activeStepIndex,
+                'text-white': index !== activeStepIndex
+              }"
+            >
+              {{ step.title }}
+            </h3>
+            <p class="text-sm text-teal-100/70 max-w-[200px] leading-relaxed">
+              {{ step.subtitle }}
+            </p>
+          </div>
+        </div>
+      </nav>
+
+      <div class="mt-auto pt-16 space-y-2 text-xs text-teal-100/70">
+        <p>Need support? <span class="text-yellow-300">support@schoolkit.com</span></p>
+        <p>Business hours: Mon - Fri, 9:00am - 5:00pm</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main workspace -->
+  <main class="flex-1 flex flex-col">
+    <header class="px-12 pt-14 pb-8 flex justify-between items-start">
+      <div>
+        <p class="text-xs uppercase tracking-[0.4em] text-teal-700">Step 3 of {{ steps.length }}</p>
+        <h1 class="text-3xl font-semibold text-gray-900 mt-3">Review & Submit</h1>
+        <p class="text-gray-500 mt-4 max-w-xl leading-relaxed">
+          Double-check the biodata and institution information you provided. If anything looks off,
+          use the edit links to make changes before creating your school account.
+        </p>
+      </div>
+      <div class="flex items-center gap-4">
+        <button
+          type="button"
+          class="text-sm font-medium text-teal-700 hover:text-teal-800 transition-colors"
+        >
+          Need help?
+        </button>
+        <button
+          type="button"
+          class="h-10 w-10 grid place-content-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition"
+          (click)="onBack()"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="flex-1 px-12 pb-12">
+      <div
+        class="bg-white rounded-[32px] shadow-xl shadow-teal-900/5 border border-gray-100 overflow-hidden"
+      >
+        <div class="px-12 py-12 space-y-12">
+          <section class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-[0.32em] text-teal-600">Bio Data</p>
+                <p class="text-sm text-gray-500">
+                  Personal details that identify the account owner.
+                </p>
+              </div>
+              <button
+                type="button"
+                class="text-sm font-semibold text-teal-700 hover:text-teal-800"
+                (click)="onEditBio()"
+              >
+                Edit Bio Data
+              </button>
+            </div>
+
+            <div class="grid gap-8 md:grid-cols-2">
+              <div class="review-card">
+                <h3>Identity</h3>
+                <dl>
+                  <div>
+                    <dt>First name</dt>
+                    <dd>{{ bioData?.firstName || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Middle name</dt>
+                    <dd>{{ bioData?.middleName || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Last name</dt>
+                    <dd>{{ bioData?.lastName || '—' }}</dd>
+                  </div>
+                </dl>
+              </div>
+
+              <div class="review-card">
+                <h3>Contact</h3>
+                <dl>
+                  <div>
+                    <dt>Email address</dt>
+                    <dd>{{ bioData?.email || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Phone number</dt>
+                    <dd>{{ bioData?.phone || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Gender</dt>
+                    <dd>{{ bioData?.gender || '—' }}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+
+            <div class="review-card md:max-w-xl">
+              <h3>Security</h3>
+              <dl>
+                <div>
+                  <dt>Password</dt>
+                  <dd>{{ maskedPassword }}</dd>
+                </div>
+                <div>
+                  <dt>Terms agreed</dt>
+                  <dd>{{ bioData?.acceptTerms ? 'Yes' : 'No' }}</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+
+          <section class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-[0.32em] text-teal-600">School Information</p>
+                <p class="text-sm text-gray-500">
+                  Branding and profile details for your institution.
+                </p>
+              </div>
+              <button
+                type="button"
+                class="text-sm font-semibold text-teal-700 hover:text-teal-800"
+                (click)="onEditSchool()"
+              >
+                Edit School Info
+              </button>
+            </div>
+
+            <div class="grid gap-8 md:grid-cols-2">
+              <div class="review-card">
+                <h3>Institution identity</h3>
+                <dl>
+                  <div>
+                    <dt>School name</dt>
+                    <dd>{{ schoolData?.name || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Official email</dt>
+                    <dd>{{ schoolData?.email || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Contact number</dt>
+                    <dd>{{ schoolData?.contactPhoneNumber || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Website</dt>
+                    <dd>{{ schoolData?.website || '—' }}</dd>
+                  </div>
+                </dl>
+              </div>
+
+              <div class="review-card">
+                <h3>Location & Motto</h3>
+                <dl>
+                  <div>
+                    <dt>Address</dt>
+                    <dd>{{ schoolData?.address || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Tagline</dt>
+                    <dd>{{ schoolData?.tagline || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Motto</dt>
+                    <dd>{{ schoolData?.motto || '—' }}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+
+            <div class="grid gap-8 md:grid-cols-2">
+              <div class="review-card">
+                <h3>Mission & Vision</h3>
+                <dl>
+                  <div>
+                    <dt>Mission</dt>
+                    <dd>{{ schoolData?.mission || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Vision</dt>
+                    <dd>{{ schoolData?.vision || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Core values</dt>
+                    <dd>{{ schoolData?.coreValues || '—' }}</dd>
+                  </div>
+                </dl>
+              </div>
+
+              <div class="review-card">
+                <h3>About the institution</h3>
+                <dl>
+                  <div>
+                    <dt>About</dt>
+                    <dd>{{ schoolData?.about || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>Short description</dt>
+                    <dd>{{ schoolData?.description || '—' }}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+
+            <div class="review-card md:max-w-xl" *ngIf="schoolData?.logoBase64">
+              <h3>Logo preview</h3>
+              <div class="mt-4 flex items-center gap-4">
+                <img
+                  [src]="schoolData?.logoBase64"
+                  [alt]="schoolData?.logoFileName || 'School logo'"
+                  class="h-24 w-24 object-contain border border-teal-100 bg-white p-3"
+                />
+                <div>
+                  <p class="text-sm font-medium text-gray-700">{{ schoolData?.logoFileName }}</p>
+                  <p class="text-xs text-gray-500">
+                    Uploaded logo will be used across branded touchpoints.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4">
+            <button type="button" class="secondary-button" (click)="onBack()">Back</button>
+            <button type="button" class="primary-button" (click)="onSubmit()">
+              Submit & Launch
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

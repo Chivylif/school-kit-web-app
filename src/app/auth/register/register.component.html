@@ -1,0 +1,459 @@
+<div class="min-h-screen bg-slate-50 flex">
+  <!-- Decorative sidebar -->
+  <aside
+    class="relative w-[360px] bg-gradient-to-br from-[#0B3F40] via-[#0E4E52] to-[#072829] text-white flex flex-col overflow-hidden"
+  >
+    <div class="absolute -left-16 -top-24 h-64 w-64 rounded-full bg-white/10 blur-3xl"></div>
+    <div class="absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-teal-300/10 blur-3xl"></div>
+
+    <div class="relative z-10 flex-1 px-10 py-12 flex flex-col">
+      <div class="flex items-center gap-3 mb-12">
+        <div
+          class="bg-yellow-400/90 text-teal-900 h-11 w-11 grid place-content-center rounded-2xl shadow-lg shadow-yellow-500/20"
+        >
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.84L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.84l-7-3z"
+            />
+          </svg>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.45em] text-teal-100/70">School Kit</p>
+          <p class="text-lg font-semibold -mt-1">Institution Onboarding</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <p class="text-xl font-semibold leading-8">
+          Let’s help you set up your institution profile in a few guided steps.
+        </p>
+        <p class="text-sm text-teal-100/70 leading-relaxed">
+          Fill in the details below and keep an eye on the progress tracker to know exactly where
+          you are in the process.
+        </p>
+      </div>
+
+      <nav class="mt-12 space-y-8">
+        <div *ngFor="let step of steps; let index = index" class="flex items-start">
+          <div class="flex flex-col items-center mr-4">
+            <div
+              class="h-10 w-10 rounded-2xl grid place-content-center text-sm font-bold transition-all duration-300"
+              [ngClass]="{
+                'bg-yellow-400 text-teal-900 shadow-lg shadow-yellow-500/30':
+                  index === activeStepIndex,
+                'bg-white/10 text-white/90 border border-white/20': index !== activeStepIndex
+              }"
+            >
+              {{ index + 1 | number : '2.0-0' }}
+            </div>
+            <div
+              *ngIf="index < steps.length - 1"
+              class="flex-1 w-px mt-4 mb-4"
+              [ngClass]="{
+                'bg-yellow-300/70': index < activeStepIndex,
+                'bg-white/15': index >= activeStepIndex
+              }"
+            ></div>
+          </div>
+          <div class="flex flex-col gap-1">
+            <span class="text-xs uppercase tracking-[0.32em] text-teal-100/60"
+              >Step {{ index + 1 }}</span
+            >
+            <h3
+              class="text-lg font-semibold"
+              [ngClass]="{
+                'text-yellow-300': index === activeStepIndex,
+                'text-white': index !== activeStepIndex
+              }"
+            >
+              {{ step.title }}
+            </h3>
+            <p class="text-sm text-teal-100/70 max-w-[200px] leading-relaxed">
+              {{ step.subtitle }}
+            </p>
+          </div>
+        </div>
+      </nav>
+
+      <div class="mt-auto pt-16 space-y-2 text-xs text-teal-100/70">
+        <p>Need support? <span class="text-yellow-300">support@schoolkit.com</span></p>
+        <p>Business hours: Mon - Fri, 9:00am - 5:00pm</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main workspace -->
+  <main class="flex-1 flex flex-col">
+    <header class="px-12 pt-14 pb-8 flex justify-between items-start">
+      <div>
+        <p class="text-xs uppercase tracking-[0.4em] text-teal-700">
+          Step {{ activeStepIndex + 1 }} of {{ steps.length }}
+        </p>
+        <h1 class="text-3xl font-semibold text-gray-900 mt-3">
+          {{ steps[activeStepIndex].title }}
+        </h1>
+        <p class="text-gray-500 mt-4 max-w-xl leading-relaxed">
+          Provide your accurate personal information. These details will be used to create and
+          secure your institution account.
+        </p>
+      </div>
+      <div class="flex items-center gap-4">
+        <button
+          type="button"
+          class="text-sm font-medium text-teal-700 hover:text-teal-800 transition-colors"
+        >
+          Need help?
+        </button>
+        <button
+          type="button"
+          class="h-10 w-10 grid place-content-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="flex-1 px-12 pb-12">
+      <div
+        class="bg-white rounded-[32px] shadow-xl shadow-teal-900/5 border border-gray-100 overflow-hidden"
+      >
+        <div class="px-12 py-12">
+          <form class="space-y-10" (ngSubmit)="onSubmit()" #registerForm="ngForm">
+            <div class="space-y-4">
+              <p class="text-xs uppercase tracking-[0.32em] text-teal-600">Personal Information</p>
+              <p class="text-sm text-gray-500">
+                Make sure these details match your official institution records.
+              </p>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-3 items-start">
+              <div class="md:col-span-1">
+                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2"
+                  >First name</label
+                >
+                <input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  required
+                  [(ngModel)]="firstName"
+                  #firstNameRef="ngModel"
+                  class="form-field"
+                  placeholder="Enter first name"
+                />
+                <div
+                  *ngIf="firstNameRef.invalid && firstNameRef.touched"
+                  class="mt-2 text-xs text-red-600"
+                >
+                  First name is required
+                </div>
+              </div>
+
+              <div class="md:col-span-1">
+                <label for="middleName" class="block text-sm font-medium text-gray-700 mb-2"
+                  >Middle name</label
+                >
+                <input
+                  id="middleName"
+                  name="middleName"
+                  type="text"
+                  [(ngModel)]="middleName"
+                  #middleNameRef="ngModel"
+                  class="form-field"
+                  placeholder="Enter middle name"
+                />
+              </div>
+
+              <div class="md:col-span-1">
+                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2"
+                  >Last name</label
+                >
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  required
+                  [(ngModel)]="lastName"
+                  #lastNameRef="ngModel"
+                  class="form-field"
+                  placeholder="Enter last name"
+                />
+                <div
+                  *ngIf="lastNameRef.invalid && lastNameRef.touched"
+                  class="mt-2 text-xs text-red-600"
+                >
+                  Last name is required
+                </div>
+              </div>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-2 items-start">
+              <div>
+                <label for="gender" class="block text-sm font-medium text-gray-700 mb-2"
+                  >Gender</label
+                >
+                <div class="relative">
+                  <select
+                    id="gender"
+                    name="gender"
+                    required
+                    [(ngModel)]="gender"
+                    #genderRef="ngModel"
+                    class="form-field form-select"
+                  >
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="prefer-not-to-say">Prefer not to say</option>
+                  </select>
+                  <svg
+                    class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+                <div
+                  *ngIf="genderRef.invalid && genderRef.touched"
+                  class="mt-2 text-xs text-red-600"
+                >
+                  Please select a gender
+                </div>
+              </div>
+
+              <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2"
+                  >Phone number</label
+                >
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  [(ngModel)]="phone"
+                  #phoneRef="ngModel"
+                  class="form-field"
+                  placeholder="e.g. +234 812 345 6789"
+                />
+                <div *ngIf="phoneRef.invalid && phoneRef.touched" class="mt-2 text-xs text-red-600">
+                  Phone number is required
+                </div>
+              </div>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-2 items-start">
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-2"
+                  >Email address</label
+                >
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  [(ngModel)]="email"
+                  #emailRef="ngModel"
+                  class="form-field"
+                  placeholder="name@institution.com"
+                />
+                <div *ngIf="emailRef.invalid && emailRef.touched" class="mt-2 text-xs text-red-600">
+                  Please enter a valid email address
+                </div>
+              </div>
+
+              <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2"
+                  >Password</label
+                >
+                <div class="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    [type]="showPassword ? 'text' : 'password'"
+                    required
+                    [(ngModel)]="password"
+                    #passwordRef="ngModel"
+                    class="form-field form-field--with-icon"
+                    placeholder="Create password"
+                  />
+                  <button
+                    type="button"
+                    (click)="togglePassword()"
+                    class="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-500"
+                  >
+                    <ng-container *ngIf="!showPassword; else hidePasswordIcon">
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                    </ng-container>
+                    <ng-template #hidePasswordIcon>
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                        />
+                      </svg>
+                    </ng-template>
+                  </button>
+                </div>
+                <div
+                  *ngIf="passwordRef.invalid && passwordRef.touched"
+                  class="mt-2 text-xs text-red-600"
+                >
+                  Password is required
+                </div>
+              </div>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-2 items-start">
+              <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2"
+                  >Confirm password</label
+                >
+                <div class="relative">
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    required
+                    [(ngModel)]="confirmPassword"
+                    #confirmPasswordRef="ngModel"
+                    class="form-field form-field--with-icon"
+                    placeholder="Confirm password"
+                  />
+                  <button
+                    type="button"
+                    (click)="toggleConfirmPassword()"
+                    class="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-500"
+                  >
+                    <ng-container *ngIf="!showConfirmPassword; else hideConfirmPasswordIcon">
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                        />
+                      </svg>
+                    </ng-container>
+                    <ng-template #hideConfirmPasswordIcon>
+                      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.8"
+                          d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                        />
+                      </svg>
+                    </ng-template>
+                  </button>
+                </div>
+                <div
+                  *ngIf="confirmPasswordRef.invalid && confirmPasswordRef.touched"
+                  class="mt-2 text-xs text-red-600"
+                >
+                  Please confirm your password
+                </div>
+                <div
+                  *ngIf="password && confirmPassword && password !== confirmPassword"
+                  class="mt-2 text-xs text-red-600"
+                >
+                  Passwords do not match
+                </div>
+              </div>
+
+              <div
+                class="rounded-none bg-teal-50 border border-teal-100 px-5 py-4 text-sm text-teal-800"
+              >
+                Password should contain a minimum of 8 characters, including one uppercase letter,
+                one number, and one special character.
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-6">
+              <div class="flex items-start gap-3">
+                <input
+                  id="terms"
+                  name="terms"
+                  type="checkbox"
+                  required
+                  [(ngModel)]="acceptTerms"
+                  #termsRef="ngModel"
+                  class="form-checkbox"
+                />
+                <label for="terms" class="text-sm text-gray-600 leading-relaxed">
+                  I confirm that I have read and agree with the
+                  <a href="#" class="text-teal-700 font-medium underline underline-offset-4"
+                    >Terms of Service</a
+                  >
+                  and
+                  <a href="#" class="text-teal-700 font-medium underline underline-offset-4"
+                    >Privacy Policy</a
+                  >.
+                </label>
+              </div>
+              <div *ngIf="termsRef.invalid && termsRef.touched" class="text-xs text-red-600">
+                You must accept the terms and conditions
+              </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4">
+              <button
+                type="submit"
+                [disabled]="registerForm.invalid || password !== confirmPassword"
+                class="primary-button"
+              >
+                Create Account and Continue
+              </button>
+
+              <p class="text-sm text-gray-500">
+                Already registered?
+                <button
+                  type="button"
+                  (click)="navigateToLogin()"
+                  class="text-teal-700 font-semibold hover:text-teal-800 underline underline-offset-4"
+                >
+                  Log in
+                </button>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

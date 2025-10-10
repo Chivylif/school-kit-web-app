@@ -1,0 +1,95 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <!-- Header with Close Button -->
+    <div class="flex justify-between items-center mb-8">
+      <div class="flex items-center">
+        <div class="bg-teal-600 p-3 rounded-xl">
+          <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.84L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.84l-7-3z"
+            />
+          </svg>
+        </div>
+      </div>
+      <button
+        (click)="continueToDashboard()"
+        class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+      >
+        <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Main Card -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
+      <!-- Success Icon -->
+      <div class="mb-6">
+        <div
+          class="inline-flex items-center justify-center w-20 h-20 bg-green-500 rounded-full mb-4"
+        >
+          <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Title and Message -->
+      <h1 class="text-2xl font-bold text-gray-900 mb-4">Congratulations</h1>
+      <p class="text-gray-600 mb-8 leading-relaxed">
+        Welcome to School Kit, please check your email address to finish up your registration.
+      </p>
+
+      <!-- Email Icon -->
+      <div class="mb-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full">
+          <svg class="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button
+        (click)="checkEmail()"
+        class="w-full bg-teal-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition duration-200 mb-6"
+      >
+        Check your email
+      </button>
+
+      <!-- Resend Link -->
+      <div class="text-sm text-gray-600">
+        <span>Didn't receive the email? </span>
+        <button
+          type="button"
+          (click)="resendEmail()"
+          class="text-teal-600 hover:text-teal-500 font-medium"
+        >
+          Click to resend
+        </button>
+      </div>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="mt-6 text-center">
+      <p class="text-xs text-gray-500">
+        By completing registration, you agree to our Terms of Service and Privacy Policy
+      </p>
+    </div>
+  </div>
+</div>

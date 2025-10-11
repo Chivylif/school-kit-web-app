@@ -4,20 +4,25 @@
 
 .form-field {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid #e2e8f0;
   background-color: #ffffff;
   color: #374151;
-  border-radius: 0;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 1px 1px rgba(15, 118, 110, 0.05);
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(15, 118, 110, 0.04);
+  font-size: 0.95rem;
 }
 
 .form-field:focus {
-  outline: 2px solid rgba(45, 212, 191, 0.35);
-  outline-offset: 0;
+  outline: none;
   border-color: #0f766e;
-  box-shadow: 0 0 0 1px #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1), 0 1px 3px rgba(15, 118, 110, 0.1);
+  transform: translateY(-1px);
+}
+
+.form-field:hover:not(:focus) {
+  border-color: #cbd5e1;
 }
 
 .form-field--textarea {
@@ -42,19 +47,27 @@
   color: #ffffff;
   background-color: #0f766e;
   border: 2px solid #0f766e;
-  border-radius: 0;
-  box-shadow: 0 12px 20px rgba(15, 118, 110, 0.18);
-  transition: all 0.2s ease-in-out;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.15);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
 .primary-button:hover:not(:disabled) {
   background-color: #115e59;
   border-color: #115e59;
-  box-shadow: 0 16px 28px rgba(15, 94, 89, 0.2);
+  box-shadow: 0 8px 20px rgba(15, 94, 89, 0.2);
+  transform: translateY(-1px);
+}
+
+.primary-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.2);
 }
 
 .primary-button:focus {
-  outline: 3px solid rgba(13, 148, 136, 0.35);
+  outline: 3px solid rgba(13, 148, 136, 0.3);
   outline-offset: 2px;
 }
 
@@ -76,8 +89,8 @@
   color: #334155;
   background-color: transparent;
   border: 2px solid #0f766e;
-  border-radius: 0;
-  transition: all 0.2s ease-in-out;
+  border-radius: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .secondary-button:hover {
@@ -97,7 +110,7 @@
   width: 100%;
   padding: 2.5rem 1.5rem;
   border: 1px dashed #0f766e;
-  border-radius: 0;
+  border-radius: 8px;
   text-align: center;
   background-color: rgba(15, 118, 110, 0.08);
   cursor: pointer;

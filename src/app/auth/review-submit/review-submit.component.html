@@ -87,10 +87,10 @@
     <header class="px-12 pt-14 pb-8 flex justify-between items-start">
       <div>
         <p class="text-xs uppercase tracking-[0.4em] text-teal-700">Step 3 of {{ steps.length }}</p>
-        <h1 class="text-3xl font-semibold text-gray-900 mt-3">Review & Submit</h1>
+        <h1 class="text-3xl font-semibold text-gray-900 mt-3">Review & Confirm</h1>
         <p class="text-gray-500 mt-4 max-w-xl leading-relaxed">
-          Double-check the biodata and institution information you provided. If anything looks off,
-          use the edit links to make changes before creating your school account.
+          Please review the information provided below and ensure all details are accurate before
+          finalizing your account registration.
         </p>
       </div>
       <div class="flex items-center gap-4">
@@ -121,53 +121,41 @@
       <div
         class="bg-white rounded-[32px] shadow-xl shadow-teal-900/5 border border-gray-100 overflow-hidden"
       >
-        <div class="px-12 py-12 space-y-12">
-          <section class="space-y-4">
+        <div class="px-12 py-12 space-y-16">
+          <section class="space-y-6">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-xs uppercase tracking-[0.32em] text-teal-600">Bio Data</p>
-                <p class="text-sm text-gray-500">
-                  Personal details that identify the account owner.
+                <p class="text-xs uppercase tracking-[0.32em] text-teal-600 font-medium">
+                  Administrator Profile
+                </p>
+                <p class="text-sm text-gray-500 mt-1">
+                  Personal information for the primary account administrator.
                 </p>
               </div>
               <button
                 type="button"
-                class="text-sm font-semibold text-teal-700 hover:text-teal-800"
+                class="text-sm font-semibold text-teal-700 hover:text-teal-800 transition-colors px-3 py-2 rounded-md hover:bg-teal-50"
                 (click)="onEditBio()"
               >
-                Edit Bio Data
+                Edit Profile
               </button>
             </div>
 
             <div class="grid gap-8 md:grid-cols-2">
               <div class="review-card">
                 <h3>Identity</h3>
-                <dl>
+                <dl class="grid grid-cols-2 gap-x-6 gap-y-4">
                   <div>
                     <dt>First name</dt>
                     <dd>{{ bioData?.firstName || '—' }}</dd>
                   </div>
                   <div>
-                    <dt>Middle name</dt>
-                    <dd>{{ bioData?.middleName || '—' }}</dd>
-                  </div>
-                  <div>
                     <dt>Last name</dt>
                     <dd>{{ bioData?.lastName || '—' }}</dd>
                   </div>
-                </dl>
-              </div>
-
-              <div class="review-card">
-                <h3>Contact</h3>
-                <dl>
                   <div>
-                    <dt>Email address</dt>
-                    <dd>{{ bioData?.email || '—' }}</dd>
-                  </div>
-                  <div>
-                    <dt>Phone number</dt>
-                    <dd>{{ bioData?.phone || '—' }}</dd>
+                    <dt>Middle name</dt>
+                    <dd>{{ bioData?.middleName || '—' }}</dd>
                   </div>
                   <div>
                     <dt>Gender</dt>
@@ -175,46 +163,50 @@
                   </div>
                 </dl>
               </div>
-            </div>
 
-            <div class="review-card md:max-w-xl">
-              <h3>Security</h3>
-              <dl>
-                <div>
-                  <dt>Password</dt>
-                  <dd>{{ maskedPassword }}</dd>
-                </div>
-                <div>
-                  <dt>Terms agreed</dt>
-                  <dd>{{ bioData?.acceptTerms ? 'Yes' : 'No' }}</dd>
-                </div>
-              </dl>
+              <div class="review-card">
+                <h3>Contact Information</h3>
+                <dl class="grid grid-cols-1 gap-y-4">
+                  <div class="grid grid-cols-2 gap-x-6">
+                    <div>
+                      <dt>Email address</dt>
+                      <dd>{{ bioData?.email || '—' }}</dd>
+                    </div>
+                    <div>
+                      <dt>Phone number</dt>
+                      <dd>{{ bioData?.phone || '—' }}</dd>
+                    </div>
+                  </div>
+                </dl>
+              </div>
             </div>
           </section>
 
-          <section class="space-y-4">
+          <section class="space-y-6">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-xs uppercase tracking-[0.32em] text-teal-600">School Information</p>
-                <p class="text-sm text-gray-500">
-                  Branding and profile details for your institution.
+                <p class="text-xs uppercase tracking-[0.32em] text-teal-600 font-medium">
+                  Institution Details
+                </p>
+                <p class="text-sm text-gray-500 mt-1">
+                  Official information and branding details for your institution.
                 </p>
               </div>
               <button
                 type="button"
-                class="text-sm font-semibold text-teal-700 hover:text-teal-800"
+                class="text-sm font-semibold text-teal-700 hover:text-teal-800 transition-colors px-3 py-2 rounded-md hover:bg-teal-50"
                 (click)="onEditSchool()"
               >
-                Edit School Info
+                Edit Institution
               </button>
             </div>
 
             <div class="grid gap-8 md:grid-cols-2">
               <div class="review-card">
-                <h3>Institution identity</h3>
-                <dl>
-                  <div>
-                    <dt>School name</dt>
+                <h3>Institution Identity</h3>
+                <dl class="grid grid-cols-2 gap-x-6 gap-y-4">
+                  <div class="col-span-2">
+                    <dt>Institution name</dt>
                     <dd>{{ schoolData?.name || '—' }}</dd>
                   </div>
                   <div>
@@ -225,7 +217,7 @@
                     <dt>Contact number</dt>
                     <dd>{{ schoolData?.contactPhoneNumber || '—' }}</dd>
                   </div>
-                  <div>
+                  <div class="col-span-2">
                     <dt>Website</dt>
                     <dd>{{ schoolData?.website || '—' }}</dd>
                   </div>
@@ -233,9 +225,9 @@
               </div>
 
               <div class="review-card">
-                <h3>Location & Motto</h3>
-                <dl>
-                  <div>
+                <h3>Location & Branding</h3>
+                <dl class="grid grid-cols-2 gap-x-6 gap-y-4">
+                  <div class="col-span-2">
                     <dt>Address</dt>
                     <dd>{{ schoolData?.address || '—' }}</dd>
                   </div>
@@ -253,7 +245,7 @@
 
             <div class="grid gap-8 md:grid-cols-2">
               <div class="review-card">
-                <h3>Mission & Vision</h3>
+                <h3>Mission & Vision Statement</h3>
                 <dl>
                   <div>
                     <dt>Mission</dt>
@@ -271,14 +263,14 @@
               </div>
 
               <div class="review-card">
-                <h3>About the institution</h3>
-                <dl>
+                <h3>Institution Overview</h3>
+                <dl class="grid grid-cols-1 gap-y-4">
                   <div>
                     <dt>About</dt>
                     <dd>{{ schoolData?.about || '—' }}</dd>
                   </div>
                   <div>
-                    <dt>Short description</dt>
+                    <dt>Description</dt>
                     <dd>{{ schoolData?.description || '—' }}</dd>
                   </div>
                 </dl>
@@ -286,27 +278,47 @@
             </div>
 
             <div class="review-card md:max-w-xl" *ngIf="schoolData?.logoBase64">
-              <h3>Logo preview</h3>
+              <h3>Institution Logo</h3>
               <div class="mt-4 flex items-center gap-4">
                 <img
                   [src]="schoolData?.logoBase64"
-                  [alt]="schoolData?.logoFileName || 'School logo'"
-                  class="h-24 w-24 object-contain border border-teal-100 bg-white p-3"
+                  [alt]="schoolData?.logoFileName || 'Institution logo'"
+                  class="h-20 w-20 object-contain border border-gray-200 bg-white p-2 rounded-lg"
                 />
                 <div>
                   <p class="text-sm font-medium text-gray-700">{{ schoolData?.logoFileName }}</p>
-                  <p class="text-xs text-gray-500">
-                    Uploaded logo will be used across branded touchpoints.
+                  <p class="text-xs text-gray-500 mt-1">
+                    This logo will be used across all institutional materials and communications.
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-4">
-            <button type="button" class="secondary-button" (click)="onBack()">Back</button>
+          <div
+            class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-8 border-t border-gray-100"
+          >
+            <button type="button" class="secondary-button" (click)="onBack()">
+              <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              Back
+            </button>
             <button type="button" class="primary-button" (click)="onSubmit()">
-              Submit & Launch
+              Complete Registration
+              <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
             </button>
           </div>
         </div>

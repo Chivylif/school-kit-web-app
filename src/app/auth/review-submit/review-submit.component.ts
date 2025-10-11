@@ -17,16 +17,16 @@ import {
 export class ReviewSubmitComponent implements OnInit {
   steps = [
     {
-      title: 'Bio Data',
-      subtitle: 'Fill in your personal profile to get started.',
+      title: 'Administrator Profile',
+      subtitle: 'Personal information for account setup.',
     },
     {
-      title: 'School Information',
-      subtitle: 'Tell us about the institution you represent.',
+      title: 'Institution Details',
+      subtitle: 'Official information about your institution.',
     },
     {
-      title: 'Review & Submit',
-      subtitle: 'Confirm your entries before submission.',
+      title: 'Review & Confirm',
+      subtitle: 'Verify all information before registration.',
     },
   ];
   activeStepIndex = 2;
@@ -48,13 +48,6 @@ export class ReviewSubmitComponent implements OnInit {
       this.router.navigate(['/auth/school-information']);
       return;
     }
-  }
-
-  get maskedPassword(): string {
-    if (!this.bioData?.password) {
-      return '';
-    }
-    return '•'.repeat(Math.max(this.bioData.password.length, 8));
   }
 
   onSubmit(): void {

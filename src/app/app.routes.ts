@@ -6,6 +6,7 @@ import { CongratulationsComponent } from './auth/congratulations/congratulations
 import { OnboardingComponent } from './onboarding/onboarding.component';
 import { SchoolInformationComponent } from './auth/school-information/school-information.component';
 import { ReviewSubmitComponent } from './auth/review-submit/review-submit.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -16,5 +17,6 @@ export const routes: Routes = [
   { path: 'auth/forgot-password', component: ForgotPasswordComponent },
   { path: 'auth/congratulations', component: CongratulationsComponent },
   { path: 'onboarding', component: OnboardingComponent },
+  { path: 'dashboard', component: DashboardComponent },
   { path: '**', redirectTo: 'auth/login' },
 ];

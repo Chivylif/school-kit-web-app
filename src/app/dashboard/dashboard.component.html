@@ -1,0 +1,1254 @@
+<div class="min-h-screen bg-slate-100">
+  <aside
+    class="fixed inset-y-0 left-0 z-40 flex h-full flex-col bg-gradient-to-b from-[#022631] via-[#033f55] to-[#0A6A6A] text-slate-100 shadow-xl transition-all duration-300 ease-out lg:translate-x-0"
+    [ngClass]="{
+      'w-20 lg:w-24': isSidebarCollapsed,
+      'w-64 lg:w-72': !isSidebarCollapsed,
+      'translate-x-0': isMobileSidebarOpen,
+      '-translate-x-full': !isMobileSidebarOpen
+    }"
+  >
+    <div
+      class="flex items-center justify-between gap-3 px-5 pt-6"
+      [ngClass]="{ 'px-3': isSidebarCollapsed }"
+    >
+      <div
+        class="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-lg font-semibold text-white shadow-2xl shadow-emerald-900/40"
+      >
+        JD
+      </div>
+      <button
+        type="button"
+        class="hidden h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/15 lg:flex"
+        aria-label="Toggle sidebar width"
+        (click)="toggleSidebarCollapse()"
+      >
+        <svg
+          *ngIf="!isSidebarCollapsed"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <svg
+          *ngIf="isSidebarCollapsed"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="mt-6 flex-1 px-3">
+      <ul class="space-y-0.5">
+        <li
+          *ngFor="let item of navItems; trackBy: trackByIndex"
+          [ngClass]="{
+            'mt-5 border-t border-white/10 pt-3':
+              !isSidebarCollapsed && item.label === 'Transactions',
+            'mt-3 border-t border-white/10 pt-2':
+              isSidebarCollapsed && item.label === 'Transactions'
+          }"
+        >
+          <button
+            type="button"
+            class="group relative flex w-full items-center gap-2.5 rounded-2xl px-4 py-2.5 text-left text-sm font-medium text-emerald-50/80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-300/60"
+            [ngClass]="{
+              'justify-center px-0': isSidebarCollapsed,
+              'bg-white/10 text-white shadow-lg shadow-emerald-900/40': item.isActive,
+              'hover:bg-white/10 hover:text-white': !item.isActive
+            }"
+            (click)="closeMobileSidebar()"
+          >
+            <span
+              *ngIf="item.isActive && !isSidebarCollapsed"
+              class="absolute left-0 top-1/2 h-10 w-1 -translate-y-1/2 rounded-full bg-emerald-300"
+            ></span>
+            <span
+              class="relative flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-lg text-emerald-100 transition group-hover:bg-white/20 group-hover:text-white"
+              [ngClass]="{ 'bg-emerald-400 text-teal-900': item.isActive }"
+            >
+              <ng-container [ngSwitch]="item.icon">
+                <svg
+                  *ngSwitchCase="'dashboard'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.8"
+                    d="M3 12l2-2m0 0l7-7 7 7m-9 2v8"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'management'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M4 6h16M4 12h10m-10 6h16"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'payments'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <rect x="3" y="5" width="18" height="14" rx="3" ry="3" stroke-width="1.6" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M16 11h3m-11 0h2"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'staffs'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <circle cx="12" cy="8" r="3" stroke-width="1.6" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M6 21v-1a6 6 0 0112 0v1"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'students'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"
+                  />
+                  <circle cx="9" cy="7" r="3" stroke-width="1.6" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M23 21v-2a4 4 0 00-3-3.87"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M16 3.13a4 4 0 010 7.75"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'settings'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M10.325 4.317l.675-2.032a1 1 0 011.9 0l.675 2.032a1 1 0 00.95.69h2.137a1 1 0 01.588 1.81l-1.73 1.256a1 1 0 00-.364 1.118l.659 2.077a1 1 0 01-1.538 1.118l-1.73-1.256a1 1 0 00-1.176 0l-1.73 1.256a1 1 0 01-1.538-1.118l.659-2.077a1 1 0 00-.364-1.118L5.35 6.817A1 1 0 015.938 5h2.137a1 1 0 00.95-.683z"
+                  />
+                  <circle cx="12" cy="12" r="3" stroke-width="1.6" />
+                </svg>
+                <svg
+                  *ngSwitchCase="'transactions'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M17 9h4m0 0v4m0-4l-7 7"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M7 15H3m0 0V11m0 4l7-7"
+                  />
+                </svg>
+              </ng-container>
+            </span>
+            <span *ngIf="!isSidebarCollapsed" class="text-sm capitalize tracking-wide text-white">{{
+              item.label
+            }}</span>
+            <svg
+              *ngIf="!isSidebarCollapsed"
+              class="ml-auto h-4 w-4 text-emerald-100/70 transition group-hover:text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <div
+      class="mt-auto space-y-3 border-t border-white/10 px-4 pb-6 pt-4"
+      [ngClass]="{ 'px-2': isSidebarCollapsed }"
+    >
+      <button
+        type="button"
+        class="flex items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 text-sm font-semibold text-emerald-50 transition hover:bg-white/20"
+        [ngClass]="{ 'justify-center px-0': isSidebarCollapsed }"
+        (click)="closeMobileSidebar()"
+      >
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 12h.01M12 8a2 2 0 01.35 3.97l-.35.03"
+            />
+          </svg>
+        </span>
+        <div *ngIf="!isSidebarCollapsed" class="flex flex-col text-left">
+          <span class="text-sm font-semibold text-white">Help center</span>
+          <span class="text-xs text-emerald-100/70">We’re here to assist</span>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="flex items-center gap-3 rounded-2xl bg-emerald-500/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500/30"
+        [ngClass]="{ 'justify-center px-0': isSidebarCollapsed }"
+        (click)="closeMobileSidebar()"
+      >
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              d="M4 7l8-4 8 4-8 4-8-4zm0 6l8 4 8-4"
+            />
+          </svg>
+        </span>
+        <div *ngIf="!isSidebarCollapsed" class="flex flex-1 flex-col text-left">
+          <span class="text-sm font-semibold text-white">Chisland Int. School</span>
+          <span class="text-xs text-emerald-100/70">Main campus</span>
+        </div>
+        <svg
+          *ngIf="!isSidebarCollapsed"
+          class="h-4 w-4 text-emerald-100/80"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M6 9l6 6 6-6"
+          />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        class="primary-button flex items-center gap-3 px-4 py-3 text-sm"
+        [ngClass]="{ 'justify-center px-0': isSidebarCollapsed }"
+        (click)="closeMobileSidebar()"
+      >
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M12 5v14m7-7H5"
+            />
+          </svg>
+        </span>
+        <span *ngIf="!isSidebarCollapsed">Create school</span>
+      </button>
+    </div>
+  </aside>
+
+  <div
+    class="fixed inset-0 z-30 bg-slate-900/50 backdrop-blur-sm lg:hidden"
+    *ngIf="isMobileSidebarOpen"
+    (click)="closeMobileSidebar()"
+  ></div>
+
+  <div
+    class="absolute inset-0 min-h-screen transition-all duration-300 lg:pl-6"
+    [ngClass]="isSidebarCollapsed ? 'lg:ml-24' : 'lg:ml-72'"
+  >
+    <header
+      class="sticky top-0 z-20 flex flex-col gap-4 bg-slate-100/95 px-4 py-3 backdrop-blur-lg lg:flex-row lg:items-center lg:justify-between lg:px-8 lg:py-3"
+    >
+      <div class="flex w-full items-center gap-3 lg:w-auto">
+        <button
+          type="button"
+          class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500 lg:hidden"
+          aria-label="Toggle navigation"
+          (click)="toggleMobileSidebar()"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+        <div class="relative flex-1 lg:w-96">
+          <svg
+            class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              d="M11 19a8 8 0 100-16 8 8 0 000 16zm10 2l-3.35-3.35"
+            />
+          </svg>
+          <input
+            type="search"
+            placeholder="Search"
+            class="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-700 shadow-sm shadow-emerald-900/5 outline-none transition focus:border-emerald-400 focus:shadow-lg focus:shadow-emerald-900/10"
+          />
+        </div>
+      </div>
+
+      <div class="flex w-full items-center justify-between gap-3 lg:w-auto">
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500"
+            aria-label="Help center"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 12h.01M12 8a2 2 0 01.35 3.97l-.35.03"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="relative flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500"
+            aria-label="Notifications"
+          >
+            <span class="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m3 5a3 3 0 003-3H9a3 3 0 003 3z"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="hidden h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500 lg:flex"
+            aria-label="Collapse sidebar"
+            (click)="toggleSidebarCollapse()"
+          >
+            <svg
+              *ngIf="!isSidebarCollapsed"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            <svg
+              *ngIf="isSidebarCollapsed"
+              class="h-5 w-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="relative">
+          <button
+            type="button"
+            class="flex items-center gap-3 rounded-2xl bg-white px-3 py-2 text-left shadow-sm shadow-emerald-900/5 transition hover:shadow-md"
+            (click)="toggleUserMenu($event)"
+            aria-haspopup="menu"
+            [attr.aria-expanded]="isUserMenuOpen"
+          >
+            <div
+              class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white font-semibold"
+            >
+              P
+            </div>
+            <div class="hidden min-w-[140px] flex-1 flex-col text-sm text-slate-600 sm:flex">
+              <span class="font-semibold text-slate-800">Patricia Onyema</span>
+              <span class="text-xs text-slate-500">Administrator</span>
+            </div>
+            <svg
+              class="hidden h-4 w-4 text-slate-400 transition sm:block"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M6 9l6 6 6-6"
+              />
+            </svg>
+          </button>
+
+          <div
+            *ngIf="isUserMenuOpen"
+            class="absolute right-0 mt-3 w-[19rem] max-w-[80vw] rounded-3xl border border-slate-100 bg-white/90 p-4 text-sm text-slate-600 shadow-2xl shadow-emerald-900/15 backdrop-blur-xl"
+            (click)="$event.stopPropagation()"
+          >
+            <div class="flex items-start gap-3">
+              <div
+                class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-base font-semibold text-white"
+              >
+                P
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-slate-900">Patricia Onyema</p>
+                <p class="text-xs text-slate-500">Administrator • patricia@schoolkit.com</p>
+                <span
+                  class="mt-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wide text-emerald-600"
+                >
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                  Active member
+                </span>
+              </div>
+              <button
+                type="button"
+                class="hidden h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-400 transition hover:border-emerald-200 hover:text-emerald-500 sm:flex"
+                aria-label="Close menu"
+                (click)="closeUserMenu()"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div class="mt-4 space-y-2">
+              <button
+                *ngFor="let action of userQuickActions; trackBy: trackByIndex"
+                type="button"
+                class="flex w-full items-start gap-3 rounded-2xl border border-slate-100 px-3.5 py-3 text-left transition hover:border-emerald-200 hover:bg-emerald-50/50 hover:text-emerald-700"
+                (click)="closeUserMenu()"
+              >
+                <span
+                  class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500"
+                >
+                  <ng-container [ngSwitch]="action.icon">
+                    <svg
+                      *ngSwitchCase="'profile'"
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <circle cx="12" cy="8" r="3" stroke-width="1.6" />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.6"
+                        d="M6 21v-1a6 6 0 0112 0v1"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'settings'"
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.6"
+                        d="M10.325 4.317l.675-2.032a1 1 0 011.9 0l.675 2.032a1 1 0 00.95.69h2.137a1 1 0 01.588 1.81l-1.73 1.256a1 1 0 00-.364 1.118l.659 2.077a1 1 0 01-1.538 1.118l-1.73-1.256a1 1 0 00-1.176 0l-1.73 1.256a1 1 0 01-1.538-1.118l.659-2.077a1 1 0 00-.364-1.118L5.35 6.817A1 1 0 015.938 5h2.137a1 1 0 00.95-.683z"
+                      />
+                      <circle cx="12" cy="12" r="3" stroke-width="1.6" />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'notifications'"
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.6"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m3 5a3 3 0 003-3H9a3 3 0 003 3z"
+                      />
+                    </svg>
+                  </ng-container>
+                </span>
+                <span>
+                  <span class="block text-sm font-semibold text-slate-800">{{ action.label }}</span>
+                  <span class="mt-0.5 block text-xs text-slate-500">{{ action.description }}</span>
+                </span>
+              </button>
+            </div>
+
+            <div class="mt-4 space-y-1.5 border-t border-slate-100 pt-4">
+              <button
+                *ngFor="let item of userMenuLinks; trackBy: trackByIndex"
+                type="button"
+                class="flex w-full items-start gap-3 rounded-2xl px-3 py-2.5 text-left transition"
+                [ngClass]="{
+                  'bg-rose-50/80 text-rose-600 hover:bg-rose-50': item.isDestructive,
+                  'hover:bg-slate-50 hover:text-emerald-600': !item.isDestructive
+                }"
+                (click)="item.label === 'Log out' ? logout() : closeUserMenu()"
+              >
+                <span
+                  class="flex h-9 w-9 items-center justify-center rounded-xl"
+                  [ngClass]="
+                    item.isDestructive ? 'bg-rose-100 text-rose-500' : 'bg-slate-100 text-slate-500'
+                  "
+                >
+                  <ng-container [ngSwitch]="item.icon">
+                    <svg
+                      *ngSwitchCase="'switch'"
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.6"
+                        d="M4 9h5l-2-2m11 8h-5l2 2M4 15h5M15 9h5"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'billing'"
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <rect x="3" y="5" width="18" height="14" rx="3" ry="3" stroke-width="1.6" />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.6"
+                        d="M16 11h3m-11 0h2"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchCase="'support'"
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.6"
+                        d="M18.364 5.636A9 9 0 105.636 18.364 9 9 0 0018.364 5.636zM9.172 9.172a4 4 0 015.656 0 4 4 0 010 5.656l-1.06 1.06"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.6"
+                        d="M12 17h.01"
+                      />
+                    </svg>
+                    <svg
+                      *ngSwitchDefault
+                      class="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <circle cx="12" cy="8" r="3" stroke-width="1.6" />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.6"
+                        d="M6 21v-1a6 6 0 0112 0v1"
+                      />
+                    </svg>
+                  </ng-container>
+                </span>
+                <span>
+                  <span
+                    class="block text-sm font-semibold text-slate-800"
+                    [ngClass]="{ 'text-rose-600': item.isDestructive }"
+                    >{{ item.label }}</span
+                  >
+                  <span
+                    class="mt-0.5 block text-[0.7rem] text-slate-500"
+                    [ngClass]="{ 'text-rose-400': item.isDestructive }"
+                    >{{ item.helper }}</span
+                  >
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="space-y-8 px-4 pb-10 pt-2 lg:px-8 lg:pt-4">
+      <section
+        class="rounded-3xl border border-white/70 bg-white/90 px-6 pb-6 pt-5 shadow-xl shadow-emerald-900/5"
+      >
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h1 class="text-2xl font-semibold text-slate-900 lg:text-3xl">
+              Welcome back, Patricia
+            </h1>
+            <p class="mt-1 text-sm text-slate-500 lg:max-w-xl">
+              Manage your school easily with real-time insights, smart payment tracking, and staff
+              coordination in one place.
+            </p>
+          </div>
+          <button type="button" class="primary-button inline-flex gap-2">
+            Generate report
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.8"
+                d="M12 5v14m7-7H5"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <article
+            *ngFor="let stat of statCards; trackBy: trackByIndex"
+            class="rounded-2xl border border-slate-100 bg-white/90 p-5 shadow-lg shadow-emerald-900/5 transition hover:-translate-y-1 hover:shadow-xl"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium uppercase tracking-[0.2em] text-slate-400">{{
+                stat.title
+              }}</span>
+              <div
+                class="flex h-10 w-10 items-center justify-center rounded-xl"
+                [ngClass]="{
+                  'bg-emerald-100 text-emerald-600': stat.icon === 'students',
+                  'bg-sky-100 text-sky-500': stat.icon === 'staff',
+                  'bg-amber-100 text-amber-500': stat.icon === 'payments'
+                }"
+              >
+                <ng-container [ngSwitch]="stat.icon">
+                  <svg
+                    *ngSwitchCase="'students'"
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.6"
+                      d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"
+                    />
+                    <circle cx="9" cy="7" r="3" stroke-width="1.6" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.6"
+                      d="M23 21v-2a4 4 0 00-3-3.87"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.6"
+                      d="M16 3.13a4 4 0 010 7.75"
+                    />
+                  </svg>
+                  <svg
+                    *ngSwitchCase="'staff'"
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <circle cx="12" cy="7" r="3" stroke-width="1.6" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.6"
+                      d="M6 21v-3a6 6 0 0112 0v3"
+                    />
+                  </svg>
+                  <svg
+                    *ngSwitchCase="'payments'"
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <rect x="3" y="5" width="18" height="14" rx="3" ry="3" stroke-width="1.6" />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.6"
+                      d="M16 11h3m-11 0h2"
+                    />
+                  </svg>
+                </ng-container>
+              </div>
+            </div>
+            <p class="mt-5 text-3xl font-semibold text-slate-900">{{ stat.value }}</p>
+            <div
+              class="mt-4 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold"
+              [ngClass]="
+                stat.trend === 'up' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500'
+              "
+            >
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  *ngIf="stat.trend === 'up'"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.8"
+                  d="M5 12l5 5L19 7"
+                />
+                <path
+                  *ngIf="stat.trend === 'down'"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.8"
+                  d="M19 12l-5-5-9 10"
+                />
+              </svg>
+              <span>{{ stat.change }}</span>
+              <span class="text-slate-400">{{ stat.changeLabel }}</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- School Information Section -->
+      <section
+        class="rounded-3xl border border-white/70 bg-white p-6 shadow-xl shadow-emerald-900/5"
+      >
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h2 class="text-lg font-semibold text-slate-900">School Information</h2>
+        </div>
+
+        <div class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <!-- School Name -->
+          <div
+            class="rounded-2xl border border-slate-100 bg-gradient-to-br from-emerald-50 to-teal-50 p-4"
+          >
+            <div class="flex items-center gap-3">
+              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100">
+                <svg
+                  class="h-6 w-6 text-emerald-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                  School Name
+                </p>
+                <p class="text-lg font-semibold text-slate-900">{{ schoolInfo.name }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- School Type -->
+          <div
+            class="rounded-2xl border border-slate-100 bg-gradient-to-br from-sky-50 to-blue-50 p-4"
+          >
+            <div class="flex items-center gap-3">
+              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100">
+                <svg
+                  class="h-6 w-6 text-sky-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M12 14l9-5-9-5-9 5 9 5z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                  />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                  School Type
+                </p>
+                <p class="text-lg font-semibold text-slate-900">{{ schoolInfo.type }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Session -->
+          <div
+            class="rounded-2xl border border-slate-100 bg-gradient-to-br from-amber-50 to-orange-50 p-4"
+          >
+            <div class="flex items-center gap-3">
+              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100">
+                <svg
+                  class="h-6 w-6 text-amber-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke-width="1.6" />
+                  <line x1="16" y1="2" x2="16" y2="6" stroke-width="1.6" stroke-linecap="round" />
+                  <line x1="8" y1="2" x2="8" y2="6" stroke-width="1.6" stroke-linecap="round" />
+                  <line x1="3" y1="10" x2="21" y2="10" stroke-width="1.6" stroke-linecap="round" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Current Session
+                </p>
+                <p class="text-lg font-semibold text-slate-900">{{ schoolInfo.currentSession }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Term -->
+          <div
+            class="rounded-2xl border border-slate-100 bg-gradient-to-br from-rose-50 to-pink-50 p-4"
+          >
+            <div class="flex items-center gap-3">
+              <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-100">
+                <svg
+                  class="h-6 w-6 text-rose-600"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <circle cx="12" cy="12" r="10" stroke-width="1.6" />
+                  <polyline
+                    points="12,6 12,12 16,14"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                  Current Term
+                </p>
+                <p class="text-lg font-semibold text-slate-900">{{ schoolInfo.currentTerm }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid gap-8 xl:grid-cols-[minmax(0,1fr)]">
+        <div class="rounded-3xl border border-white/70 bg-white p-6 shadow-xl shadow-emerald-900/5">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-lg font-semibold text-slate-900">Administration</h2>
+            <button
+              type="button"
+              class="primary-button inline-flex items-center gap-2 px-4 py-2 text-sm"
+            >
+              View all
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.8"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <article
+              *ngFor="let admin of admins; trackBy: trackByIndex"
+              class="flex items-center gap-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4 shadow-sm shadow-emerald-900/5 transition hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div
+                class="flex h-12 w-12 items-center justify-center rounded-xl overflow-hidden text-sm font-semibold text-white"
+                [ngClass]="admin.bgClass"
+              >
+                <img
+                  *ngIf="admin.image; else initialsTemplate"
+                  [src]="admin.image"
+                  [alt]="admin.name"
+                  class="h-full w-full object-cover"
+                />
+                <ng-template #initialsTemplate>
+                  {{ admin.initials }}
+                </ng-template>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-slate-800">{{ admin.name }}</p>
+                <p class="text-xs text-slate-500">{{ admin.role }}</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="rounded-3xl border border-white/70 bg-white p-6 shadow-xl shadow-emerald-900/5">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-lg font-semibold text-slate-900">All Payments</h2>
+            <div class="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                class="inline-flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600"
+              >
+                October
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M6 9l6 6 6-6"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="primary-button inline-flex items-center gap-2 px-4 py-2 text-sm"
+              >
+                Download report
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.8"
+                    d="M4 4v16h16V9l-6-5H4z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.8"
+                    d="M14 3v6h6"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-6 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 p-4">
+            <svg class="h-56 w-full" viewBox="0 0 640 220" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="chartAmber" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#facc15" stop-opacity="0.8" />
+                  <stop offset="100%" stop-color="#facc15" stop-opacity="0.1" />
+                </linearGradient>
+                <linearGradient id="chartTeal" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#34d399" stop-opacity="0.8" />
+                  <stop offset="100%" stop-color="#34d399" stop-opacity="0.1" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M0 150 C80 120 160 140 240 110 C320 100 400 140 480 130 C560 120 640 150 640 150 V220 H0 Z"
+                fill="url(#chartAmber)"
+                stroke="#facc15"
+                stroke-width="2"
+                opacity="0.9"
+              ></path>
+              <path
+                d="M0 170 C80 140 160 120 240 70 C320 120 400 90 480 110 C560 140 640 120 640 120 V220 H0 Z"
+                fill="url(#chartTeal)"
+                stroke="#34d399"
+                stroke-width="2"
+                opacity="0.9"
+              ></path>
+            </svg>
+          </div>
+
+          <div class="mt-5 flex flex-wrap items-center gap-4 text-sm text-slate-600">
+            <div
+              class="flex items-center gap-2"
+              *ngFor="let series of paymentSeries; trackBy: trackByIndex"
+            >
+              <span class="h-3 w-3 rounded-full" [ngClass]="series.color"></span>
+              <span>{{ series.label }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Payments Table -->
+      <section
+        class="rounded-3xl border border-white/70 bg-white p-6 shadow-xl shadow-emerald-900/5"
+      >
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h2 class="text-lg font-semibold text-slate-900">Recent Payments</h2>
+          <div class="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600"
+            >
+              Filter by
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.6"
+                  d="M6 9l6 6 6-6"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-slate-100">
+                <th
+                  class="pb-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500"
+                >
+                  Fee
+                </th>
+                <th
+                  class="pb-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500"
+                >
+                  Name
+                </th>
+                <th
+                  class="pb-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500"
+                >
+                  Amount Paid
+                </th>
+                <th
+                  class="pb-3 text-left text-xs font-medium uppercase tracking-wider text-slate-500"
+                >
+                  Status
+                </th>
+                <th
+                  class="pb-3 text-right text-xs font-medium uppercase tracking-wider text-slate-500"
+                >
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+              <tr
+                *ngFor="let payment of recentPayments; trackBy: trackByIndex"
+                class="group transition hover:bg-slate-50/80"
+              >
+                <td class="py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100">
+                      <svg
+                        class="h-5 w-5 text-slate-600"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1.6"
+                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                        />
+                      </svg>
+                    </div>
+                    <span class="text-sm font-medium text-slate-800">{{ payment.fee }}</span>
+                  </div>
+                </td>
+                <td class="py-4">
+                  <span class="text-sm text-slate-600">{{ payment.name }}</span>
+                </td>
+                <td class="py-4">
+                  <span class="text-sm font-semibold text-slate-900">{{ payment.amount }}</span>
+                </td>
+                <td class="py-4">
+                  <span
+                    class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold"
+                    [ngClass]="{
+                      'bg-amber-100 text-amber-700': payment.status === 'Pending',
+                      'bg-emerald-100 text-emerald-700': payment.status === 'Paid'
+                    }"
+                  >
+                    {{ payment.status }}
+                  </span>
+                </td>
+                <td class="py-4 text-right">
+                  <button
+                    type="button"
+                    class="inline-flex items-center gap-1 text-sm font-medium text-emerald-600 transition hover:text-emerald-700"
+                  >
+                    View Details
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-6 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 disabled:opacity-50"
+              disabled
+            >
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.6"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <span
+              class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-sm font-semibold text-white"
+              >1</span
+            >
+            <button
+              type="button"
+              class="flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+            >
+              2
+            </button>
+            <button
+              type="button"
+              class="flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+            >
+              3
+            </button>
+            <span class="px-2 text-sm text-slate-500">...</span>
+            <button
+              type="button"
+              class="flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+            >
+              10
+            </button>
+            <button
+              type="button"
+              class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600"
+            >
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.6"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+          <button
+            type="button"
+            class="flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-emerald-600"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Loader Component -->
+  <app-loader [isLoading]="isLoading" message="Signing you out..."></app-loader>
+</div>

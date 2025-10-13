@@ -448,7 +448,7 @@ export class StudentManagementComponent {
   }
 
   // Navigation methods
-  navigateToItem(item: any): void {
+  navigateToItem(item: NavItem): void {
     this.navItems.forEach((navItem) => (navItem.isActive = false));
     item.isActive = true;
 
@@ -478,6 +478,13 @@ export class StudentManagementComponent {
 
   closeMobileSidebar(): void {
     this.isMobileSidebarOpen = false;
+  }
+
+  logout(): void {
+    // Handle logout logic here
+    console.log('Logout clicked');
+    // You can add navigation to login page or clear authentication here
+    // this.router.navigate(['/login']);
   }
 
   // Tab management

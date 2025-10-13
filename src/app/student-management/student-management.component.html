@@ -1,0 +1,1357 @@
+<div class="min-h-screen bg-slate-100">
+  <!-- Sidebar -->
+  <aside
+    class="fixed inset-y-0 left-0 z-40 flex h-full flex-col bg-gradient-to-b from-[#022631] via-[#033f55] to-[#0A6A6A] text-slate-100 shadow-xl transition-all duration-300 ease-out lg:translate-x-0"
+    [ngClass]="{
+      'w-20 lg:w-24': isSidebarCollapsed,
+      'w-64 lg:w-72': !isSidebarCollapsed,
+      'translate-x-0': isMobileSidebarOpen,
+      '-translate-x-full': !isMobileSidebarOpen
+    }"
+  >
+    <!-- Sidebar Header -->
+    <div
+      class="flex items-center justify-between gap-3 px-5 pt-6"
+      [ngClass]="{ 'px-3': isSidebarCollapsed }"
+    >
+      <div
+        class="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-lg font-semibold text-white shadow-2xl shadow-emerald-900/40"
+      >
+        JD
+      </div>
+      <button
+        type="button"
+        class="hidden h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/15 lg:flex"
+        aria-label="Toggle sidebar width"
+        (click)="toggleSidebarCollapse()"
+      >
+        <svg
+          *ngIf="!isSidebarCollapsed"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <svg
+          *ngIf="isSidebarCollapsed"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex-1 space-y-2 px-3 pt-8">
+      <a
+        *ngFor="let item of navItems; trackBy: trackByIndex"
+        href="javascript:void(0)"
+        class="group flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium transition"
+        [ngClass]="{
+          'bg-white/10 text-white shadow-lg shadow-emerald-900/20': item.isActive,
+          'text-slate-300 hover:bg-white/5 hover:text-white': !item.isActive,
+          'justify-center px-0': isSidebarCollapsed
+        }"
+        (click)="navigateToItem(item)"
+      >
+        <!-- Dashboard Icon -->
+        <svg
+          *ngIf="item.icon === 'dashboard'"
+          class="h-6 w-6 flex-shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+          />
+        </svg>
+
+        <!-- Management Icon -->
+        <svg
+          *ngIf="item.icon === 'management'"
+          class="h-6 w-6 flex-shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+          />
+        </svg>
+
+        <!-- Payments Icon -->
+        <svg
+          *ngIf="item.icon === 'payments'"
+          class="h-6 w-6 flex-shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+          />
+        </svg>
+
+        <!-- Staffs Icon -->
+        <svg
+          *ngIf="item.icon === 'staffs'"
+          class="h-6 w-6 flex-shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+          />
+        </svg>
+
+        <!-- Students Icon -->
+        <svg
+          *ngIf="item.icon === 'students'"
+          class="h-6 w-6 flex-shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M12 14l9-5-9-5-9 5 9 5z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+          />
+        </svg>
+
+        <!-- Settings Icon -->
+        <svg
+          *ngIf="item.icon === 'settings'"
+          class="h-6 w-6 flex-shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+        </svg>
+
+        <!-- Transactions Icon -->
+        <svg
+          *ngIf="item.icon === 'transactions'"
+          class="h-6 w-6 flex-shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          />
+        </svg>
+
+        <span *ngIf="!isSidebarCollapsed" class="truncate">{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="border-t border-white/10 p-5">
+      <button
+        type="button"
+        class="primary-button flex items-center gap-3 px-4 py-3 text-sm"
+        [ngClass]="{ 'justify-center px-0': isSidebarCollapsed }"
+        (click)="closeMobileSidebar()"
+      >
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M12 5v14m7-7H5"
+            />
+          </svg>
+        </span>
+        <span *ngIf="!isSidebarCollapsed">Create school</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mobile Sidebar Backdrop -->
+  <div
+    class="fixed inset-0 z-30 bg-slate-900/50 backdrop-blur-sm lg:hidden"
+    *ngIf="isMobileSidebarOpen"
+    (click)="closeMobileSidebar()"
+  ></div>
+
+  <!-- Main Content -->
+  <div
+    class="absolute inset-0 min-h-screen transition-all duration-300 lg:pl-6"
+    [ngClass]="isSidebarCollapsed ? 'lg:ml-24' : 'lg:ml-72'"
+  >
+    <!-- Header -->
+    <header
+      class="sticky top-0 z-20 flex flex-col gap-4 bg-slate-100/95 px-4 py-3 backdrop-blur-lg lg:flex-row lg:items-center lg:justify-between lg:px-8 lg:py-3"
+    >
+      <div class="flex w-full items-center gap-3 lg:w-auto">
+        <button
+          type="button"
+          class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500 lg:hidden"
+          aria-label="Toggle navigation"
+          (click)="toggleMobileSidebar()"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+        <div class="relative flex-1 lg:w-96">
+          <svg
+            class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              d="M11 19a8 8 0 100-16 8 8 0 000 16zm10 2l-3.35-3.35"
+            />
+          </svg>
+          <input
+            type="search"
+            placeholder="Search students, parents..."
+            [(ngModel)]="searchQuery"
+            (input)="updateFilteredData()"
+            class="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 shadow-sm shadow-emerald-900/5 outline-none transition focus:border-emerald-400 focus:shadow-lg focus:shadow-emerald-900/10"
+          />
+        </div>
+      </div>
+
+      <div class="flex w-full items-center justify-between gap-3 lg:w-auto">
+        <div class="flex items-center gap-3">
+          <button
+            type="button"
+            class="relative flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500"
+            aria-label="Notifications"
+          >
+            <span class="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m3 5a3 3 0 003-3H9a3 3 0 003 3z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="relative">
+          <button
+            type="button"
+            class="flex items-center gap-3 rounded-2xl bg-white px-3 py-2 text-left shadow-sm shadow-emerald-900/5 transition hover:shadow-md"
+          >
+            <div
+              class="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white font-semibold"
+            >
+              JD
+            </div>
+            <div class="hidden min-w-[140px] flex-1 flex-col text-sm text-slate-600 sm:flex">
+              <span class="font-semibold text-slate-800">John Doe</span>
+              <span class="text-xs text-slate-500">Proprietor</span>
+            </div>
+            <svg
+              class="hidden h-4 w-4 text-slate-400 transition sm:block"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M6 9l6 6 6-6"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="space-y-8 px-4 pb-10 pt-2 lg:px-8 lg:pt-4">
+      <!-- Page Header -->
+      <section
+        class="rounded-3xl border border-white/70 bg-white/90 px-6 pb-6 pt-5 shadow-xl shadow-emerald-900/5"
+      >
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h1 class="text-2xl font-semibold text-slate-900 lg:text-3xl">Student Management</h1>
+            <p class="mt-1 text-sm text-slate-500">Manage students and their parent information</p>
+          </div>
+          <button
+            type="button"
+            class="primary-button inline-flex items-center gap-2"
+            (click)="activeTab === 'students' ? createStudent() : createParent()"
+          >
+            {{ activeTab === 'students' ? 'Add New Student' : 'Add Parent' }}
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.8"
+                d="M12 5v14m7-7H5"
+              />
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- Student Management Tabs -->
+      <div
+        class="rounded-3xl border border-white/70 bg-white/90 px-6 py-4 shadow-xl shadow-emerald-900/5"
+      >
+        <div class="flex space-x-1 rounded-2xl bg-slate-100 p-1">
+          <button
+            type="button"
+            class="flex-1 rounded-xl px-4 py-2.5 text-sm font-medium transition focus:outline-none"
+            [ngClass]="{
+              'bg-white text-emerald-600 shadow-sm': activeTab === 'students',
+              'text-slate-600 hover:text-slate-900': activeTab !== 'students'
+            }"
+            (click)="switchTab('students')"
+          >
+            Students ({{ totalActiveStudents }})
+          </button>
+          <button
+            type="button"
+            class="flex-1 rounded-xl px-4 py-2.5 text-sm font-medium transition focus:outline-none"
+            [ngClass]="{
+              'bg-white text-emerald-600 shadow-sm': activeTab === 'parents',
+              'text-slate-600 hover:text-slate-900': activeTab !== 'parents'
+            }"
+            (click)="switchTab('parents')"
+          >
+            Parents ({{ totalParents }})
+          </button>
+        </div>
+      </div>
+
+      <!-- Students Content -->
+      <div *ngIf="activeTab === 'students'" class="space-y-6">
+        <!-- Student Statistics -->
+        <section
+          class="rounded-3xl border border-white/70 bg-white/90 px-6 py-6 shadow-xl shadow-emerald-900/5"
+        >
+          <h2 class="text-lg font-semibold text-slate-900 mb-4">Student Overview</h2>
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                Total Students
+              </p>
+              <p class="text-2xl font-semibold text-slate-900">{{ totalActiveStudents }}</p>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                Total Classes
+              </p>
+              <p class="text-2xl font-semibold text-slate-900">{{ classList.length }}</p>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                Male Students
+              </p>
+              <p class="text-2xl font-semibold text-slate-900">
+                {{ maleStudentsCount }}
+              </p>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                Female Students
+              </p>
+              <p class="text-2xl font-semibold text-slate-900">
+                {{ femaleStudentsCount }}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Student Filters -->
+        <section
+          class="rounded-3xl border border-white/70 bg-white/90 px-6 py-4 shadow-xl shadow-emerald-900/5"
+        >
+          <div class="flex flex-wrap gap-4">
+            <div class="flex-1 min-w-[200px]">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Class</label>
+              <select
+                [(ngModel)]="selectedClassFilter"
+                (change)="updateFilteredData()"
+                class="form-select"
+              >
+                <option value="All">All Classes</option>
+                <option *ngFor="let classItem of classList" [value]="classItem.id">
+                  {{ classItem.className }}
+                </option>
+              </select>
+            </div>
+            <div class="flex-1 min-w-[200px]">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Gender</label>
+              <select
+                [(ngModel)]="selectedGenderFilter"
+                (change)="updateFilteredData()"
+                class="form-select"
+              >
+                <option value="All">All Genders</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="flex-1 min-w-[200px]">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
+              <select
+                [(ngModel)]="selectedStatusFilter"
+                (change)="updateFilteredData()"
+                class="form-select"
+              >
+                <option value="All">All Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- Students Table -->
+        <section
+          class="rounded-3xl border border-white/70 bg-white/90 px-6 py-6 shadow-xl shadow-emerald-900/5"
+        >
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-slate-200">
+                  <th class="table-header">Student</th>
+                  <th class="table-header">Registration No.</th>
+                  <th class="table-header">Class</th>
+                  <th class="table-header">Gender</th>
+                  <th class="table-header">Status</th>
+                  <th class="table-header">Enrollment Date</th>
+                  <th class="table-header">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let student of filteredStudents; trackBy: trackByIndex">
+                  <td class="table-cell">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-white font-semibold text-sm"
+                      >
+                        {{ getStudentInitials(student.firstName + ' ' + student.lastName) }}
+                      </div>
+                      <div>
+                        <p class="font-medium text-slate-900">
+                          {{ student.firstName }} {{ student.lastName }}
+                        </p>
+                        <p class="text-sm text-slate-500">{{ student.email }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table-cell">{{ student.regNo }}</td>
+                  <td class="table-cell">{{ getClassName(student.classId) }}</td>
+                  <td class="table-cell">{{ student.gender }}</td>
+                  <td class="table-cell">
+                    <span
+                      [ngClass]="student.status === 'Active' ? 'status-active' : 'status-inactive'"
+                    >
+                      {{ student.status }}
+                    </span>
+                  </td>
+                  <td class="table-cell">{{ student.enrollmentDate | date : 'mediumDate' }}</td>
+                  <td class="table-cell">
+                    <div class="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-1 text-sm font-medium text-emerald-600 transition hover:text-emerald-700"
+                        (click)="editStudent(student)"
+                      >
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.6"
+                            d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"
+                          />
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.6"
+                            d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"
+                          />
+                        </svg>
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-1 text-sm font-medium text-red-600 transition hover:text-red-700"
+                        (click)="deleteStudent(student)"
+                      >
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.6"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Empty state -->
+            <div
+              *ngIf="filteredStudents.length === 0"
+              class="flex flex-col items-center justify-center py-12 text-center"
+            >
+              <div class="rounded-full bg-slate-100 p-3 mb-4">
+                <svg
+                  class="h-8 w-8 text-slate-400"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 14l9-5-9-5-9 5 9 5z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                  />
+                </svg>
+              </div>
+              <p class="text-sm text-slate-500 mb-2">No students found</p>
+              <p class="text-xs text-slate-400">Try adjusting your search or filters</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Parents Content -->
+      <div *ngIf="activeTab === 'parents'" class="space-y-6">
+        <!-- Parents Table -->
+        <section
+          class="rounded-3xl border border-white/70 bg-white/90 px-6 py-6 shadow-xl shadow-emerald-900/5"
+        >
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-slate-200">
+                  <th class="table-header">Parent</th>
+                  <th class="table-header">Student</th>
+                  <th class="table-header">Relationship</th>
+                  <th class="table-header">Phone</th>
+                  <th class="table-header">Occupation</th>
+                  <th class="table-header">Status</th>
+                  <th class="table-header">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let parent of filteredParents; trackBy: trackByIndex">
+                  <td class="table-cell">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold text-sm"
+                      >
+                        {{ getStudentInitials(parent.firstName + ' ' + parent.lastName) }}
+                      </div>
+                      <div>
+                        <p class="font-medium text-slate-900">
+                          {{ parent.firstName }} {{ parent.lastName }}
+                        </p>
+                        <p class="text-sm text-slate-500">{{ parent.email }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="table-cell">{{ getStudentName(parent.studentId) }}</td>
+                  <td class="table-cell">{{ parent.relationship }}</td>
+                  <td class="table-cell">{{ parent.phone }}</td>
+                  <td class="table-cell">{{ parent.occupation }}</td>
+                  <td class="table-cell">
+                    <span
+                      [ngClass]="parent.status === 'Active' ? 'status-active' : 'status-inactive'"
+                    >
+                      {{ parent.status }}
+                    </span>
+                  </td>
+                  <td class="table-cell">
+                    <div class="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-1 text-sm font-medium text-emerald-600 transition hover:text-emerald-700"
+                        (click)="editParent(parent)"
+                      >
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.6"
+                            d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"
+                          />
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.6"
+                            d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"
+                          />
+                        </svg>
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        class="inline-flex items-center gap-1 text-sm font-medium text-red-600 transition hover:text-red-700"
+                        (click)="deleteParent(parent)"
+                      >
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.6"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Empty state -->
+            <div
+              *ngIf="filteredParents.length === 0"
+              class="flex flex-col items-center justify-center py-12 text-center"
+            >
+              <div class="rounded-full bg-slate-100 p-3 mb-4">
+                <svg
+                  class="h-8 w-8 text-slate-400"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                  />
+                </svg>
+              </div>
+              <p class="text-sm text-slate-500 mb-2">No parents found</p>
+              <p class="text-xs text-slate-400">Try adjusting your search</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Student Modal -->
+  <div
+    *ngIf="isStudentModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    (click)="closeStudentModal()"
+  >
+    <div
+      class="relative w-full max-w-2xl rounded-3xl border border-white/70 bg-white p-6 shadow-2xl shadow-emerald-900/10 mx-4"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-semibold text-slate-900">
+          {{ isEditMode ? 'Edit Student' : 'Add New Student' }}
+        </h2>
+        <button
+          type="button"
+          class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500"
+          (click)="closeStudentModal()"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <form (ngSubmit)="submitStudentForm()" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- First Name -->
+          <div>
+            <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2"
+              >First Name</label
+            >
+            <input
+              type="text"
+              id="firstName"
+              [(ngModel)]="studentForm.firstName"
+              name="firstName"
+              required
+              class="form-field"
+              placeholder="Enter first name"
+            />
+          </div>
+
+          <!-- Middle Name -->
+          <div>
+            <label for="middleName" class="block text-sm font-medium text-gray-700 mb-2"
+              >Middle Name</label
+            >
+            <input
+              type="text"
+              id="middleName"
+              [(ngModel)]="studentForm.middleName"
+              name="middleName"
+              class="form-field"
+              placeholder="Enter middle name (optional)"
+            />
+          </div>
+
+          <!-- Last Name -->
+          <div>
+            <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2"
+              >Last Name</label
+            >
+            <input
+              type="text"
+              id="lastName"
+              [(ngModel)]="studentForm.lastName"
+              name="lastName"
+              required
+              class="form-field"
+              placeholder="Enter last name"
+            />
+          </div>
+
+          <!-- Gender -->
+          <div>
+            <label for="gender" class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+            <select
+              id="gender"
+              [(ngModel)]="studentForm.gender"
+              name="gender"
+              required
+              class="form-select"
+            >
+              <option value="" disabled>Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <input
+              type="email"
+              id="email"
+              [(ngModel)]="studentForm.email"
+              name="email"
+              required
+              class="form-field"
+              placeholder="Enter email address"
+            />
+          </div>
+
+          <!-- Registration Number -->
+          <div>
+            <label for="regNo" class="block text-sm font-medium text-gray-700 mb-2"
+              >Registration Number</label
+            >
+            <input
+              type="text"
+              id="regNo"
+              [(ngModel)]="studentForm.regNo"
+              name="regNo"
+              required
+              class="form-field"
+              placeholder="Enter registration number"
+            />
+          </div>
+
+          <!-- Date of Birth -->
+          <div>
+            <label for="dateOfBirth" class="block text-sm font-medium text-gray-700 mb-2"
+              >Date of Birth</label
+            >
+            <input
+              type="date"
+              id="dateOfBirth"
+              [(ngModel)]="studentForm.dateOfBirth"
+              name="dateOfBirth"
+              required
+              class="form-field"
+            />
+          </div>
+
+          <!-- Class -->
+          <div>
+            <label for="classId" class="block text-sm font-medium text-gray-700 mb-2">Class</label>
+            <select
+              id="classId"
+              [(ngModel)]="studentForm.classId"
+              name="classId"
+              required
+              class="form-select"
+            >
+              <option value="" disabled>Select Class</option>
+              <option *ngFor="let classItem of classList" [value]="classItem.id">
+                {{ classItem.className }}
+              </option>
+            </select>
+          </div>
+
+          <!-- State -->
+          <div>
+            <label for="state" class="block text-sm font-medium text-gray-700 mb-2">State</label>
+            <input
+              type="text"
+              id="state"
+              [(ngModel)]="studentForm.state"
+              name="state"
+              required
+              class="form-field"
+              placeholder="Enter state"
+            />
+          </div>
+
+          <!-- Country -->
+          <div>
+            <label for="country" class="block text-sm font-medium text-gray-700 mb-2"
+              >Country</label
+            >
+            <input
+              type="text"
+              id="country"
+              [(ngModel)]="studentForm.country"
+              name="country"
+              required
+              class="form-field"
+              placeholder="Enter country"
+            />
+          </div>
+
+          <!-- Status -->
+          <div>
+            <label for="status" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <div class="relative">
+              <select
+                id="status"
+                [(ngModel)]="studentForm.status"
+                name="status"
+                required
+                class="form-field form-select"
+              >
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+              <svg
+                class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div>
+          <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+          <textarea
+            id="address"
+            [(ngModel)]="studentForm.address"
+            name="address"
+            required
+            rows="3"
+            class="form-field"
+            placeholder="Enter full address"
+          ></textarea>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" class="secondary-button" (click)="closeStudentModal()">
+            Cancel
+          </button>
+          <button type="submit" class="primary-button inline-flex items-center gap-2">
+            {{ isEditMode ? 'Update Student' : 'Add Student & Continue' }}
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.8"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Parent Modal -->
+  <div
+    *ngIf="isParentModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    (click)="closeParentModal()"
+  >
+    <div
+      class="relative w-full max-w-2xl rounded-3xl border border-white/70 bg-white p-6 shadow-2xl shadow-emerald-900/10 mx-4"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-semibold text-slate-900">
+          {{ isEditMode ? 'Edit Parent' : 'Add New Parent' }}
+        </h2>
+        <button
+          type="button"
+          class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500"
+          (click)="closeParentModal()"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <form (ngSubmit)="submitParentForm()" class="space-y-6">
+        <!-- Student Selection (if not pre-selected) -->
+        <div *ngIf="!currentStudentForParent">
+          <label for="studentSelect" class="block text-sm font-medium text-gray-700 mb-2"
+            >Student</label
+          >
+          <select
+            id="studentSelect"
+            [(ngModel)]="currentStudentForParent"
+            [ngModelOptions]="{ standalone: true }"
+            required
+            class="form-select"
+          >
+            <option [ngValue]="null" disabled>Select Student</option>
+            <option *ngFor="let student of studentList" [ngValue]="student">
+              {{ student.firstName }} {{ student.lastName }} ({{ student.regNo }})
+            </option>
+          </select>
+        </div>
+
+        <!-- Display selected student (if pre-selected) -->
+        <div *ngIf="currentStudentForParent" class="bg-slate-50 p-4 rounded-lg">
+          <p class="text-sm font-medium text-gray-700">Selected Student:</p>
+          <p class="text-slate-900">
+            {{ currentStudentForParent.firstName }} {{ currentStudentForParent.lastName }} ({{
+              currentStudentForParent.regNo
+            }})
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- First Name -->
+          <div>
+            <label for="parentFirstName" class="block text-sm font-medium text-gray-700 mb-2"
+              >First Name</label
+            >
+            <input
+              type="text"
+              id="parentFirstName"
+              [(ngModel)]="parentForm.firstName"
+              name="firstName"
+              required
+              class="form-field"
+              placeholder="Enter first name"
+            />
+          </div>
+
+          <!-- Last Name -->
+          <div>
+            <label for="parentLastName" class="block text-sm font-medium text-gray-700 mb-2"
+              >Last Name</label
+            >
+            <input
+              type="text"
+              id="parentLastName"
+              [(ngModel)]="parentForm.lastName"
+              name="lastName"
+              required
+              class="form-field"
+              placeholder="Enter last name"
+            />
+          </div>
+
+          <!-- Relationship -->
+          <div>
+            <label for="relationship" class="block text-sm font-medium text-gray-700 mb-2"
+              >Relationship</label
+            >
+            <select
+              id="relationship"
+              [(ngModel)]="parentForm.relationship"
+              name="relationship"
+              required
+              class="form-select"
+            >
+              <option value="" disabled>Select Relationship</option>
+              <option value="Father">Father</option>
+              <option value="Mother">Mother</option>
+              <option value="Guardian">Guardian</option>
+              <option value="Uncle">Uncle</option>
+              <option value="Aunt">Aunt</option>
+              <option value="Grandparent">Grandparent</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <input
+              type="email"
+              [(ngModel)]="parentForm.email"
+              name="email"
+              required
+              class="form-field"
+              placeholder="Enter email address"
+            />
+          </div>
+
+          <!-- Phone -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+            <input
+              type="tel"
+              [(ngModel)]="parentForm.phone"
+              name="phone"
+              required
+              class="form-field"
+              placeholder="Enter phone number"
+            />
+          </div>
+
+          <!-- Occupation -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Occupation</label>
+            <input
+              type="text"
+              [(ngModel)]="parentForm.occupation"
+              name="occupation"
+              required
+              class="form-field"
+              placeholder="Enter occupation"
+            />
+          </div>
+
+          <!-- Status -->
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <select [(ngModel)]="parentForm.status" name="status" required class="form-select">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+          <textarea
+            [(ngModel)]="parentForm.address"
+            name="address"
+            required
+            rows="3"
+            class="form-field"
+            placeholder="Enter full address"
+          ></textarea>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" class="secondary-button" (click)="closeParentModal()">
+            Cancel
+          </button>
+          <button type="submit" class="primary-button inline-flex items-center gap-2">
+            {{ isEditMode ? 'Update Parent' : 'Add Parent' }}
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.8"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Step 2: Parent Modal (After Student Creation) -->
+  <div
+    *ngIf="isStep2ParentModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    (click)="closeStep2ParentModal()"
+  >
+    <div
+      class="relative w-full max-w-2xl rounded-3xl border border-white/70 bg-white p-6 shadow-2xl shadow-emerald-900/10 mx-4"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-2xl font-semibold text-slate-900">Add Parent Information</h2>
+          <p class="text-sm text-slate-500 mt-1">
+            Step 2 of 2: Add parent details for {{ currentStudentForParent?.firstName }}
+            {{ currentStudentForParent?.lastName }}
+          </p>
+        </div>
+        <button
+          type="button"
+          class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500"
+          (click)="closeStep2ParentModal()"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <form (ngSubmit)="submitStep2ParentForm()" class="space-y-6">
+        <!-- Student Info Display -->
+        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+          <div class="flex items-center gap-3">
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 font-semibold"
+            >
+              {{
+                getStudentInitials(
+                  currentStudentForParent?.firstName + ' ' + currentStudentForParent?.lastName
+                )
+              }}
+            </div>
+            <div>
+              <p class="font-semibold text-emerald-900">
+                {{ currentStudentForParent?.firstName }} {{ currentStudentForParent?.lastName }}
+              </p>
+              <p class="text-sm text-emerald-600">
+                Registration: {{ currentStudentForParent?.regNo }} | Class:
+                {{ getClassName(currentStudentForParent?.classId || '') }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- First Name -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+            <input
+              type="text"
+              [(ngModel)]="parentForm.firstName"
+              name="firstName"
+              required
+              class="form-field"
+              placeholder="Enter first name"
+            />
+          </div>
+
+          <!-- Last Name -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+            <input
+              type="text"
+              [(ngModel)]="parentForm.lastName"
+              name="lastName"
+              required
+              class="form-field"
+              placeholder="Enter last name"
+            />
+          </div>
+
+          <!-- Relationship -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Relationship</label>
+            <select
+              [(ngModel)]="parentForm.relationship"
+              name="relationship"
+              required
+              class="form-field"
+            >
+              <option value="">Select Relationship</option>
+              <option value="Father">Father</option>
+              <option value="Mother">Mother</option>
+              <option value="Guardian">Guardian</option>
+              <option value="Uncle">Uncle</option>
+              <option value="Aunt">Aunt</option>
+              <option value="Grandparent">Grandparent</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <input
+              type="email"
+              [(ngModel)]="parentForm.email"
+              name="email"
+              required
+              class="form-field"
+              placeholder="Enter email address"
+            />
+          </div>
+
+          <!-- Phone -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+            <input
+              type="tel"
+              [(ngModel)]="parentForm.phone"
+              name="phone"
+              required
+              class="form-field"
+              placeholder="Enter phone number"
+            />
+          </div>
+
+          <!-- Occupation -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Occupation</label>
+            <input
+              type="text"
+              [(ngModel)]="parentForm.occupation"
+              name="occupation"
+              required
+              class="form-field"
+              placeholder="Enter occupation"
+            />
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+          <textarea
+            [(ngModel)]="parentForm.address"
+            name="address"
+            required
+            rows="3"
+            class="form-field"
+            placeholder="Enter full address"
+          ></textarea>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" class="secondary-button" (click)="closeStep2ParentModal()">
+            Skip for Now
+          </button>
+          <button type="submit" class="primary-button inline-flex items-center gap-2">
+            Complete Registration
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.8"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

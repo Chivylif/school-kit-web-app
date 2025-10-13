@@ -333,4 +333,11 @@ export class DashboardComponent {
       this.router.navigate(['/auth/login']);
     }, 1500); // 1.5 second delay to show loader
   }
+
+  navigateToItem(item: NavItem): void {
+    if (item.label === 'School management') {
+      this.router.navigate(['/session-management']);
+    }
+    // Add other navigation logic as needed
+  }
 }

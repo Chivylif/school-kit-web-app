@@ -1,0 +1,24 @@
+/* Sidebar specific styles can be added here if needed */
+/* Currently using Tailwind classes, but custom styles can be added for specific requirements */
+
+.sidebar-transition {
+  transition: all 0.3s ease-out;
+}
+
+/* Custom scrollbar for navigation if needed */
+nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

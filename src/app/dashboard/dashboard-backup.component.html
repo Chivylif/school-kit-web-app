@@ -1,21 +1,321 @@
 <div class="min-h-screen bg-slate-100">
-  <app-sidebar
-    [navItems]="navItems"
-    [isSidebarCollapsed]="isSidebarCollapsed"
-    [isMobileSidebarOpen]="isMobileSidebarOpen"
-    [userQuickActions]="userQuickActions"
-    [userMenuLinks]="userMenuLinks"
-    [schoolName]="schoolInfo.name"
-    schoolCampus="Main campus"
-    userInitials="JD"
-    [userName]="'Patricia Onyema'"
-    userRole="Administrator"
-    userEmail="patricia@schoolkit.com"
-    (toggleSidebarCollapse)="toggleSidebarCollapse()"
-    (closeMobileSidebar)="closeMobileSidebar()"
-    (navigateToItem)="navigateToItem($event)"
-    (logout)="logout()"
-  ></app-sidebar>
+  <aside
+    class="fixed inset-y-0 left-0 z-40 flex h-full flex-col bg-gradient-to-b from-[#022631] via-[#033f55] to-[#0A6A6A] text-slate-100 shadow-xl transition-all duration-300 ease-out lg:translate-x-0"
+    [ngClass]="{
+      'w-20 lg:w-24': isSidebarCollapsed,
+      'w-64 lg:w-72': !isSidebarCollapsed,
+      'translate-x-0': isMobileSidebarOpen,
+      '-translate-x-full': !isMobileSidebarOpen
+    }"
+  >
+    <div
+      class="flex items-center justify-between gap-3 px-5 pt-6"
+      [ngClass]="{ 'px-3': isSidebarCollapsed }"
+    >
+      <div
+        class="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-lg font-semibold text-white shadow-2xl shadow-emerald-900/40"
+      >
+        JD
+      </div>
+      <button
+        type="button"
+        class="hidden h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white transition hover:bg-white/15 lg:flex"
+        aria-label="Toggle sidebar width"
+        (click)="toggleSidebarCollapse()"
+      >
+        <svg
+          *ngIf="!isSidebarCollapsed"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <svg
+          *ngIf="isSidebarCollapsed"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="mt-6 flex-1 px-3">
+      <ul class="space-y-0.5">
+        <li
+          *ngFor="let item of navItems; trackBy: trackByIndex"
+          [ngClass]="{
+            'mt-5 border-t border-white/10 pt-3':
+              !isSidebarCollapsed && item.label === 'Transactions',
+            'mt-3 border-t border-white/10 pt-2':
+              isSidebarCollapsed && item.label === 'Transactions'
+          }"
+        >
+          <button
+            type="button"
+            class="group relative flex w-full items-center gap-2.5 rounded-2xl px-4 py-2.5 text-left text-sm font-medium text-emerald-50/80 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-300/60"
+            [ngClass]="{
+              'justify-center px-0': isSidebarCollapsed,
+              'bg-white/10 text-white shadow-lg shadow-emerald-900/40': item.isActive,
+              'hover:bg-white/10 hover:text-white': !item.isActive
+            }"
+            (click)="navigateToItem(item); closeMobileSidebar()"
+          >
+            <span
+              *ngIf="item.isActive && !isSidebarCollapsed"
+              class="absolute left-0 top-1/2 h-10 w-1 -translate-y-1/2 rounded-full bg-emerald-300"
+            ></span>
+            <span
+              class="relative flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-lg text-emerald-100 transition group-hover:bg-white/20 group-hover:text-white"
+              [ngClass]="{ 'bg-emerald-400 text-teal-900': item.isActive }"
+            >
+              <ng-container [ngSwitch]="item.icon">
+                <svg
+                  *ngSwitchCase="'dashboard'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.8"
+                    d="M3 12l2-2m0 0l7-7 7 7m-9 2v8"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'management'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M4 6h16M4 12h10m-10 6h16"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'payments'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <rect x="3" y="5" width="18" height="14" rx="3" ry="3" stroke-width="1.6" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M16 11h3m-11 0h2"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'staffs'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <circle cx="12" cy="8" r="3" stroke-width="1.6" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M6 21v-1a6 6 0 0112 0v1"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'students'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2"
+                  />
+                  <circle cx="9" cy="7" r="3" stroke-width="1.6" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M23 21v-2a4 4 0 00-3-3.87"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M16 3.13a4 4 0 010 7.75"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'settings'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M10.325 4.317l.675-2.032a1 1 0 011.9 0l.675 2.032a1 1 0 00.95.69h2.137a1 1 0 01.588 1.81l-1.73 1.256a1 1 0 00-.364 1.118l.659 2.077a1 1 0 01-1.538 1.118l-1.73-1.256a1 1 0 00-1.176 0l-1.73 1.256a1 1 0 01-1.538-1.118l.659-2.077a1 1 0 00-.364-1.118L5.35 6.817A1 1 0 015.938 5h2.137a1 1 0 00.95-.683z"
+                  />
+                  <circle cx="12" cy="12" r="3" stroke-width="1.6" />
+                </svg>
+                <svg
+                  *ngSwitchCase="'transactions'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M17 9h4m0 0v4m0-4l-7 7"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M7 15H3m0 0V11m0 4l7-7"
+                  />
+                </svg>
+              </ng-container>
+            </span>
+            <span *ngIf="!isSidebarCollapsed" class="text-sm capitalize tracking-wide text-white">{{
+              item.label
+            }}</span>
+            <svg
+              *ngIf="!isSidebarCollapsed"
+              class="ml-auto h-4 w-4 text-emerald-100/70 transition group-hover:text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <div
+      class="mt-auto space-y-3 border-t border-white/10 px-4 pb-6 pt-4"
+      [ngClass]="{ 'px-2': isSidebarCollapsed }"
+    >
+      <button
+        type="button"
+        class="flex items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 text-sm font-semibold text-emerald-50 transition hover:bg-white/20"
+        [ngClass]="{ 'justify-center px-0': isSidebarCollapsed }"
+        (click)="closeMobileSidebar()"
+      >
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 12h.01M12 8a2 2 0 01.35 3.97l-.35.03"
+            />
+          </svg>
+        </span>
+        <div *ngIf="!isSidebarCollapsed" class="flex flex-col text-left">
+          <span class="text-sm font-semibold text-white">Help center</span>
+          <span class="text-xs text-emerald-100/70">We’re here to assist</span>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="flex items-center gap-3 rounded-2xl bg-emerald-500/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500/30"
+        [ngClass]="{ 'justify-center px-0': isSidebarCollapsed }"
+        (click)="closeMobileSidebar()"
+      >
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.6"
+              d="M4 7l8-4 8 4-8 4-8-4zm0 6l8 4 8-4"
+            />
+          </svg>
+        </span>
+        <div *ngIf="!isSidebarCollapsed" class="flex flex-1 flex-col text-left">
+          <span class="text-sm font-semibold text-white">Chisland Int. School</span>
+          <span class="text-xs text-emerald-100/70">Main campus</span>
+        </div>
+        <svg
+          *ngIf="!isSidebarCollapsed"
+          class="h-4 w-4 text-emerald-100/80"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M6 9l6 6 6-6"
+          />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        class="primary-button flex items-center gap-3 px-4 py-3 text-sm"
+        [ngClass]="{ 'justify-center px-0': isSidebarCollapsed }"
+        (click)="closeMobileSidebar()"
+      >
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M12 5v14m7-7H5"
+            />
+          </svg>
+        </span>
+        <span *ngIf="!isSidebarCollapsed">Create school</span>
+      </button>
+    </div>
+  </aside>
+
+  <div
+    class="fixed inset-0 z-30 bg-slate-900/50 backdrop-blur-sm lg:hidden"
+    *ngIf="isMobileSidebarOpen"
+    (click)="closeMobileSidebar()"
+  ></div>
 
   <div
     class="absolute inset-0 min-h-screen transition-all duration-300 lg:pl-6"

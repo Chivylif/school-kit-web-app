@@ -2,19 +2,14 @@ import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
+import {
+  SidebarComponent,
+  NavItem,
+  UserQuickAction,
+  UserMenuLink,
+} from '../shared/components/sidebar/sidebar.component';
 
 type StatIcon = 'students' | 'staff' | 'payments';
-
-type NavIcon =
-  | 'dashboard'
-  | 'management'
-  | 'payments'
-  | 'staffs'
-  | 'students'
-  | 'settings'
-  | 'transactions';
-
-type UserActionIcon = 'profile' | 'settings' | 'notifications' | 'support' | 'billing' | 'switch';
 
 interface StatCard {
   title: string;
@@ -53,29 +48,10 @@ interface SchoolInfo {
   currentTerm: string;
 }
 
-interface NavItem {
-  label: string;
-  icon: NavIcon;
-  isActive?: boolean;
-}
-
-interface UserQuickAction {
-  label: string;
-  description: string;
-  icon: UserActionIcon;
-}
-
-interface UserMenuLink {
-  label: string;
-  helper: string;
-  icon: UserActionIcon;
-  isDestructive?: boolean;
-}
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, LoaderComponent],
+  imports: [CommonModule, LoaderComponent, SidebarComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })

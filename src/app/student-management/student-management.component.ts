@@ -2,6 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SidebarComponent, NavItem } from '../shared/components/sidebar/sidebar.component';
+
+interface Step {
+  id: number;
+  title: string;
+  description: string;
+  completed: boolean;
+}
 
 interface StudentData {
   id: string;
@@ -71,13 +79,56 @@ interface ParentForm {
 
 @Component({
   selector: 'app-student-management',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SidebarComponent],
   templateUrl: './student-management.component.html',
   styleUrl: './student-management.component.css',
 })
 export class StudentManagementComponent {
   // Tab state
   activeTab: 'students' | 'parents' = 'students';
+
+  // Steps configuration
+  steps: Step[] = [
+    {
+      id: 1,
+      title: 'Basic Information',
+      description: 'Student personal details',
+      completed: false,
+    },
+    {
+      id: 2,
+      title: 'Academic & Location',
+      description: 'Class and address information',
+      completed: false,
+    },
+    {
+      id: 3,
+      title: 'Parent Personal Info',
+      description: 'Parent/guardian basic details',
+      completed: false,
+    },
+    {
+      id: 4,
+      title: 'Parent Contact',
+      description: 'Contact and address details',
+      completed: false,
+    },
+  ];
+
+  parentSteps: Step[] = [
+    {
+      id: 1,
+      title: 'Personal Information',
+      description: 'Basic parent/guardian details',
+      completed: false,
+    },
+    {
+      id: 2,
+      title: 'Additional Details',
+      description: 'Contact and occupation information',
+      completed: false,
+    },
+  ];
 
   // Modal state
   isStudentModalOpen = false;
@@ -86,6 +137,10 @@ export class StudentManagementComponent {
   currentEditingStudent: StudentData | null = null;
   currentEditingParent: ParentData | null = null;
   currentStudentForParent: StudentData | null = null;
+
+  // Multi-step form state
+  studentFormStep = 1;
+  parentFormStep = 1;
 
   // 2-step process state
   isStep2ParentModalOpen = false;
@@ -102,7 +157,7 @@ export class StudentManagementComponent {
   isMobileSidebarOpen = false;
 
   // Navigation items
-  readonly navItems = [
+  readonly navItems: NavItem[] = [
     { label: 'Dashboard', icon: 'dashboard', isActive: false },
     { label: 'School management', icon: 'management', isActive: false },
     { label: 'Payments', icon: 'payments', isActive: false },
@@ -468,12 +523,14 @@ export class StudentManagementComponent {
   // Student Management Methods
   createStudent(): void {
     this.isEditMode = false;
+    this.studentFormStep = 1;
     this.resetStudentForm();
     this.isStudentModalOpen = true;
   }
 
   editStudent(student: StudentData): void {
     this.isEditMode = true;
+    this.studentFormStep = 1;
     this.currentEditingStudent = student;
     this.populateStudentForm(student);
     this.isStudentModalOpen = true;
@@ -525,7 +582,44 @@ export class StudentManagementComponent {
     this.isStudentModalOpen = false;
     this.isEditMode = false;
     this.currentEditingStudent = null;
+    this.studentFormStep = 1;
     this.resetStudentForm();
+  }
+
+  // Student form step navigation
+  nextStudentStep(): void {
+    if (this.studentFormStep < 4) {
+      this.studentFormStep++;
+    }
+  }
+
+  previousStudentStep(): void {
+    if (this.studentFormStep > 1) {
+      this.studentFormStep--;
+    }
+  }
+
+  getStudentStepTitle(): string {
+    switch (this.studentFormStep) {
+      case 1:
+        return 'Basic Information';
+      case 2:
+        return 'Academic & Location Information';
+      case 3:
+        return 'Parent Personal Information';
+      case 4:
+        return 'Parent Contact & Address';
+      default:
+        return '';
+    }
+  }
+
+  handleStudentFormSubmit(): void {
+    if (this.studentFormStep < 4) {
+      this.nextStudentStep();
+    } else {
+      this.submitStudentForm();
+    }
   }
 
   openStep2ParentModal(): void {
@@ -556,6 +650,7 @@ export class StudentManagementComponent {
   // Parent Management Methods
   createParent(student?: StudentData): void {
     this.isEditMode = false;
+    this.parentFormStep = 1;
     this.currentStudentForParent = student || null;
     this.resetParentForm();
     this.isParentModalOpen = true;
@@ -563,6 +658,7 @@ export class StudentManagementComponent {
 
   editParent(parent: ParentData): void {
     this.isEditMode = true;
+    this.parentFormStep = 1;
     this.currentEditingParent = parent;
     this.currentStudentForParent = this.studentList.find((s) => s.id === parent.studentId) || null;
     this.populateParentForm(parent);
@@ -609,7 +705,40 @@ export class StudentManagementComponent {
     this.isEditMode = false;
     this.currentEditingParent = null;
     this.currentStudentForParent = null;
+    this.parentFormStep = 1;
     this.resetParentForm();
+  }
+
+  // Parent form step navigation
+  nextParentStep(): void {
+    if (this.parentFormStep < 2) {
+      this.parentFormStep++;
+    }
+  }
+
+  previousParentStep(): void {
+    if (this.parentFormStep > 1) {
+      this.parentFormStep--;
+    }
+  }
+
+  getParentStepTitle(): string {
+    switch (this.parentFormStep) {
+      case 1:
+        return 'Personal Information';
+      case 2:
+        return 'Additional Details';
+      default:
+        return '';
+    }
+  }
+
+  handleParentFormSubmit(): void {
+    if (this.parentFormStep < 2) {
+      this.nextParentStep();
+    } else {
+      this.submitParentForm();
+    }
   }
 
   // Helper methods
@@ -723,6 +852,31 @@ export class StudentManagementComponent {
 
   get femaleStudentsCount(): number {
     return this.studentList.filter((s) => s.gender === 'Female' && s.status === 'Active').length;
+  }
+
+  // Step management helpers
+  getCurrentStep(): Step {
+    return this.steps[this.studentFormStep - 1] || this.steps[0];
+  }
+
+  getCurrentParentStep(): Step {
+    return this.parentSteps[this.parentFormStep - 1] || this.parentSteps[0];
+  }
+
+  isStepCompleted(stepId: number): boolean {
+    return stepId < this.studentFormStep;
+  }
+
+  isStepActive(stepId: number): boolean {
+    return stepId === this.studentFormStep;
+  }
+
+  isParentStepCompleted(stepId: number): boolean {
+    return stepId < this.parentFormStep;
+  }
+
+  isParentStepActive(stepId: number): boolean {
+    return stepId === this.parentFormStep;
   }
 
   trackByIndex = (_: number, item: unknown) => item;

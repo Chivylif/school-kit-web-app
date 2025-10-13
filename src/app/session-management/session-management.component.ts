@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SidebarComponent, NavItem } from '../shared/components/sidebar/sidebar.component';
 
 interface ClassData {
   id: string;
@@ -81,7 +82,7 @@ interface SubjectForm {
 @Component({
   selector: 'app-session-management',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SidebarComponent],
   templateUrl: './session-management.component.html',
   styleUrls: ['./session-management.component.css'],
 })
@@ -345,7 +346,7 @@ export class SessionManagementComponent {
   ];
 
   // Navigation items
-  readonly navItems = [
+  readonly navItems: NavItem[] = [
     { label: 'Dashboard', icon: 'dashboard', isActive: false },
     { label: 'School management', icon: 'management', isActive: true },
     { label: 'Payments', icon: 'payments', isActive: false },
@@ -709,4 +710,11 @@ export class SessionManagementComponent {
   }
 
   trackByIndex = (_: number, item: unknown) => item;
+
+  logout(): void {
+    // Handle logout logic here (clear session, tokens, etc.)
+    console.log('Logging out...');
+    // Navigate back to login page
+    this.router.navigate(['/auth/login']);
+  }
 }

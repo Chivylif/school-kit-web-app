@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SidebarComponent, NavItem } from '../shared/components/sidebar/sidebar.component';
 
 interface StudentData {
   id: string;
@@ -66,9 +67,9 @@ interface ClassInfo {
 @Component({
   selector: 'app-student-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SidebarComponent],
   templateUrl: './student-detail.component.html',
-  styleUrl: './student-detail.component.css'
+  styleUrl: './student-detail.component.css',
 })
 export class StudentDetailComponent implements OnInit {
   studentId: string = '';
@@ -77,8 +78,23 @@ export class StudentDetailComponent implements OnInit {
   assignments: Assignment[] = [];
   fees: Fee[] = [];
   classInfo: ClassInfo | null = null;
-  
+
   activeTab: 'overview' | 'assignments' | 'fees' | 'parents' = 'overview';
+
+  // Sidebar properties
+  navItems: NavItem[] = [
+    { label: 'Dashboard', icon: 'dashboard', isActive: false },
+    { label: 'Student Management', icon: 'students', isActive: true },
+    { label: 'Staff Management', icon: 'staffs', isActive: false },
+    { label: 'Session Management', icon: 'management', isActive: false },
+    { label: 'Payments', icon: 'payments', isActive: false },
+    { label: 'Transactions', icon: 'transactions', isActive: false },
+    { label: 'Settings', icon: 'settings', isActive: false },
+  ];
+
+  isSidebarCollapsed = false;
+  isMobileSidebarOpen = false;
+  isUserMenuOpen = false;
 
   // Mock data - replace with actual service calls
   studentList: StudentData[] = [
@@ -113,7 +129,7 @@ export class StudentDetailComponent implements OnInit {
       classId: 'class2',
       status: 'Active',
       enrollmentDate: '2024-09-01',
-    }
+    },
   ];
 
   parentList: ParentData[] = [
@@ -140,7 +156,7 @@ export class StudentDetailComponent implements OnInit {
       occupation: 'Teacher',
       status: 'Active',
       studentId: 'STU001',
-    }
+    },
   ];
 
   classList: ClassInfo[] = [
@@ -148,14 +164,26 @@ export class StudentDetailComponent implements OnInit {
       id: 'class1',
       className: 'JSS 1A',
       formTeacher: 'Mrs. Sarah Johnson',
-      subjects: ['Mathematics', 'English Language', 'Basic Science', 'Social Studies', 'Civic Education']
+      subjects: [
+        'Mathematics',
+        'English Language',
+        'Basic Science',
+        'Social Studies',
+        'Civic Education',
+      ],
     },
     {
       id: 'class2',
       className: 'JSS 2B',
       formTeacher: 'Mr. Michael Brown',
-      subjects: ['Mathematics', 'English Language', 'Basic Science', 'Social Studies', 'Computer Studies']
-    }
+      subjects: [
+        'Mathematics',
+        'English Language',
+        'Basic Science',
+        'Social Studies',
+        'Computer Studies',
+      ],
+    },
   ];
 
   assignmentsList: Assignment[] = [
@@ -166,7 +194,7 @@ export class StudentDetailComponent implements OnInit {
       description: 'Complete exercises 1-20 on quadratic equations',
       dueDate: '2024-10-20',
       status: 'Pending',
-      maxScore: 100
+      maxScore: 100,
     },
     {
       id: 'ASS002',
@@ -177,7 +205,7 @@ export class StudentDetailComponent implements OnInit {
       status: 'Submitted',
       maxScore: 50,
       score: 42,
-      submissionDate: '2024-10-14'
+      submissionDate: '2024-10-14',
     },
     {
       id: 'ASS003',
@@ -188,8 +216,8 @@ export class StudentDetailComponent implements OnInit {
       status: 'Graded',
       maxScore: 30,
       score: 28,
-      submissionDate: '2024-10-09'
-    }
+      submissionDate: '2024-10-09',
+    },
   ];
 
   feesList: Fee[] = [
@@ -201,7 +229,7 @@ export class StudentDetailComponent implements OnInit {
       status: 'Paid',
       paidDate: '2024-09-28',
       term: 'First Term',
-      session: '2024/2025'
+      session: '2024/2025',
     },
     {
       id: 'FEE002',
@@ -211,7 +239,7 @@ export class StudentDetailComponent implements OnInit {
       status: 'Paid',
       paidDate: '2024-09-28',
       term: 'First Term',
-      session: '2024/2025'
+      session: '2024/2025',
     },
     {
       id: 'FEE003',
@@ -220,7 +248,7 @@ export class StudentDetailComponent implements OnInit {
       dueDate: '2024-10-15',
       status: 'Pending',
       term: 'First Term',
-      session: '2024/2025'
+      session: '2024/2025',
     },
     {
       id: 'FEE004',
@@ -229,17 +257,14 @@ export class StudentDetailComponent implements OnInit {
       dueDate: '2024-09-30',
       status: 'Overdue',
       term: 'First Term',
-      session: '2024/2025'
-    }
+      session: '2024/2025',
+    },
   ];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.studentId = params['id'];
       this.loadStudentData();
     });
@@ -247,20 +272,20 @@ export class StudentDetailComponent implements OnInit {
 
   loadStudentData(): void {
     // Load student data
-    this.student = this.studentList.find(s => s.id === this.studentId) || null;
-    
+    this.student = this.studentList.find((s) => s.id === this.studentId) || null;
+
     if (this.student) {
       // Load class info
-      this.classInfo = this.classList.find(c => c.id === this.student!.classId) || null;
-      
+      this.classInfo = this.classList.find((c) => c.id === this.student!.classId) || null;
+
       // Load parents
-      this.parents = this.parentList.filter(p => p.studentId === this.studentId);
-      
+      this.parents = this.parentList.filter((p) => p.studentId === this.studentId);
+
       // Load assignments (filter by student's class subjects)
-      this.assignments = this.assignmentsList.filter(a => 
+      this.assignments = this.assignmentsList.filter((a) =>
         this.classInfo?.subjects.includes(a.subject)
       );
-      
+
       // Load fees
       this.fees = this.feesList;
     }
@@ -280,7 +305,11 @@ export class StudentDetailComponent implements OnInit {
   }
 
   getStudentInitials(name: string): string {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase();
   }
 
   getStatusColor(status: string): string {
@@ -302,7 +331,7 @@ export class StudentDetailComponent implements OnInit {
   formatCurrency(amount: number): string {
     return new Intl.NumberFormat('en-NG', {
       style: 'currency',
-      currency: 'NGN'
+      currency: 'NGN',
     }).format(amount);
   }
 
@@ -312,22 +341,72 @@ export class StudentDetailComponent implements OnInit {
 
   getPaidFees(): number {
     return this.fees
-      .filter(fee => fee.status === 'Paid')
+      .filter((fee) => fee.status === 'Paid')
       .reduce((total, fee) => total + fee.amount, 0);
   }
 
   getPendingFees(): number {
     return this.fees
-      .filter(fee => fee.status === 'Pending' || fee.status === 'Overdue')
+      .filter((fee) => fee.status === 'Pending' || fee.status === 'Overdue')
       .reduce((total, fee) => total + fee.amount, 0);
   }
 
   getAssignmentStats(): { total: number; pending: number; submitted: number; graded: number } {
     return {
       total: this.assignments.length,
-      pending: this.assignments.filter(a => a.status === 'Pending').length,
-      submitted: this.assignments.filter(a => a.status === 'Submitted').length,
-      graded: this.assignments.filter(a => a.status === 'Graded').length
+      pending: this.assignments.filter((a) => a.status === 'Pending').length,
+      submitted: this.assignments.filter((a) => a.status === 'Submitted').length,
+      graded: this.assignments.filter((a) => a.status === 'Graded').length,
     };
+  }
+
+  // Sidebar methods
+  toggleSidebarCollapse(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
+
+  toggleMobileSidebar(): void {
+    this.isMobileSidebarOpen = !this.isMobileSidebarOpen;
+  }
+
+  closeMobileSidebar(): void {
+    this.isMobileSidebarOpen = false;
+  }
+
+  navigateToItem(item: NavItem): void {
+    // Handle navigation based on the item
+    switch (item.label) {
+      case 'Dashboard':
+        this.router.navigate(['/dashboard']);
+        break;
+      case 'Student Management':
+        this.router.navigate(['/student-management']);
+        break;
+      case 'Staff Management':
+        this.router.navigate(['/staff-management']);
+        break;
+      case 'Session Management':
+        this.router.navigate(['/session-management']);
+        break;
+      case 'Payments':
+        this.router.navigate(['/payments']);
+        break;
+      case 'Transactions':
+        this.router.navigate(['/transactions']);
+        break;
+      case 'Settings':
+        this.router.navigate(['/settings']);
+        break;
+    }
+  }
+
+  toggleUserMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
+
+  logout(): void {
+    // Handle logout logic
+    console.log('Logout clicked');
   }
 }

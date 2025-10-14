@@ -58,11 +58,12 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 
@@ -108,7 +109,7 @@ table tbody tr:hover {
   .grid-responsive {
     grid-template-columns: 1fr;
   }
-  
+
   .text-responsive {
     font-size: 0.875rem;
   }
@@ -119,7 +120,7 @@ table tbody tr:hover {
   .no-print {
     display: none !important;
   }
-  
+
   .print-break {
     page-break-after: always;
   }

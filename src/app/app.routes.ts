@@ -10,6 +10,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SessionManagementComponent } from './session-management/session-management.component';
 import { ClassDetail } from './class-detail/class-detail';
 import { StudentManagementComponent } from './student-management/student-management.component';
+import { StudentDetailComponent } from './student-detail/student-detail.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
@@ -24,5 +25,6 @@ export const routes: Routes = [
   { path: 'session-management', component: SessionManagementComponent },
   { path: 'class/:id', component: ClassDetail },
   { path: 'student-management', component: StudentManagementComponent },
+  { path: 'student/:id', component: StudentDetailComponent },
   { path: '**', redirectTo: 'auth/login' },
 ];

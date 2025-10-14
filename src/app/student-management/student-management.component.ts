@@ -967,4 +967,10 @@ export class StudentManagementComponent {
     const student = this.studentList.find((s) => s.id === parentData.studentId);
     return student ? [student] : [];
   }
+
+  // Navigate to full student details page
+  viewStudentFullDetails(student: StudentData): void {
+    this.closeStudentDetailsModal();
+    this.router.navigate(['/student', student.id]);
+  }
 }

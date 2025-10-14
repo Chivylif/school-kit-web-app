@@ -60,7 +60,7 @@
             type="search"
             placeholder="Search students, parents..."
             [(ngModel)]="searchQuery"
-            (input)="updateFilteredData()"
+            (input)="onSearch()"
             class="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-gray-700 shadow-sm shadow-emerald-900/5 outline-none transition focus:border-emerald-400 focus:shadow-lg focus:shadow-emerald-900/10"
           />
         </div>
@@ -223,7 +223,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Class</label>
               <select
                 [(ngModel)]="selectedClassFilter"
-                (change)="updateFilteredData()"
+                (change)="onFilterChange()"
                 class="form-select"
               >
                 <option value="All">All Classes</option>
@@ -236,7 +236,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Gender</label>
               <select
                 [(ngModel)]="selectedGenderFilter"
-                (change)="updateFilteredData()"
+                (change)="onFilterChange()"
                 class="form-select"
               >
                 <option value="All">All Genders</option>
@@ -248,7 +248,7 @@
               <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
               <select
                 [(ngModel)]="selectedStatusFilter"
-                (change)="updateFilteredData()"
+                (change)="onFilterChange()"
                 class="form-select"
               >
                 <option value="All">All Status</option>
@@ -267,18 +267,58 @@
             <table class="w-full">
               <thead>
                 <tr class="border-b border-slate-200">
-                  <th class="table-header">Student</th>
-                  <th class="table-header">Registration No.</th>
+                  <th
+                    class="table-header cursor-pointer hover:bg-gray-50"
+                    (click)="onSort('firstName')"
+                  >
+                    <div class="flex items-center justify-between">
+                      Student
+                      <span class="text-xs">{{ getSortIcon('firstName') }}</span>
+                    </div>
+                  </th>
+                  <th
+                    class="table-header cursor-pointer hover:bg-gray-50"
+                    (click)="onSort('regNo')"
+                  >
+                    <div class="flex items-center justify-between">
+                      Registration No.
+                      <span class="text-xs">{{ getSortIcon('regNo') }}</span>
+                    </div>
+                  </th>
                   <th class="table-header">Class</th>
-                  <th class="table-header">Gender</th>
-                  <th class="table-header">Status</th>
-                  <th class="table-header">Enrollment Date</th>
+                  <th
+                    class="table-header cursor-pointer hover:bg-gray-50"
+                    (click)="onSort('gender')"
+                  >
+                    <div class="flex items-center justify-between">
+                      Gender
+                      <span class="text-xs">{{ getSortIcon('gender') }}</span>
+                    </div>
+                  </th>
+                  <th
+                    class="table-header cursor-pointer hover:bg-gray-50"
+                    (click)="onSort('status')"
+                  >
+                    <div class="flex items-center justify-between">
+                      Status
+                      <span class="text-xs">{{ getSortIcon('status') }}</span>
+                    </div>
+                  </th>
+                  <th
+                    class="table-header cursor-pointer hover:bg-gray-50"
+                    (click)="onSort('enrollmentDate')"
+                  >
+                    <div class="flex items-center justify-between">
+                      Enrollment Date
+                      <span class="text-xs">{{ getSortIcon('enrollmentDate') }}</span>
+                    </div>
+                  </th>
                   <th class="table-header">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr
-                  *ngFor="let student of filteredStudents; trackBy: trackByIndex"
+                  *ngFor="let student of paginatedStudents; trackBy: trackByIndex"
                   class="cursor-pointer hover:bg-gray-50 transition-colors"
                   (click)="viewStudentDetails(student)"
                 >
@@ -381,6 +421,85 @@
               <p class="text-sm text-slate-500 mb-2">No students found</p>
               <p class="text-xs text-slate-400">Try adjusting your search or filters</p>
             </div>
+
+            <!-- Pagination and Table Info -->
+            <div
+              *ngIf="filteredStudents.length > 0"
+              class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <!-- Table Info -->
+              <div class="text-sm text-slate-600">
+                Showing {{ (currentPage - 1) * pageSize + 1 }} to
+                {{ Math.min(currentPage * pageSize, totalItems) }} of {{ totalItems }} students
+              </div>
+
+              <!-- Page Size Selector -->
+              <div class="flex items-center gap-2">
+                <label class="text-sm text-slate-600">Show:</label>
+                <select
+                  [(ngModel)]="pageSize"
+                  (change)="onPageSizeChange()"
+                  class="rounded-lg border border-slate-200 px-3 py-1 text-sm focus:border-emerald-400 focus:outline-none"
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+                <span class="text-sm text-slate-600">per page</span>
+              </div>
+
+              <!-- Pagination Controls -->
+              <div class="flex items-center gap-2">
+                <!-- Previous Button -->
+                <button
+                  type="button"
+                  [disabled]="currentPage === 1"
+                  (click)="previousPage()"
+                  class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+                >
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+
+                <!-- Page Numbers -->
+                <button
+                  *ngFor="let page of getPageNumbers()"
+                  type="button"
+                  (click)="goToPage(page)"
+                  [class]="
+                    page === currentPage
+                      ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500 text-white font-medium'
+                      : 'flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600'
+                  "
+                >
+                  {{ page }}
+                </button>
+
+                <!-- Next Button -->
+                <button
+                  type="button"
+                  [disabled]="currentPage === totalPages"
+                  (click)="nextPage()"
+                  class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+                >
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         </section>
       </div>
@@ -406,7 +525,7 @@
               </thead>
               <tbody>
                 <tr
-                  *ngFor="let parent of filteredParents; trackBy: trackByIndex"
+                  *ngFor="let parent of paginatedParents; trackBy: trackByIndex"
                   class="cursor-pointer hover:bg-gray-50 transition-colors"
                   (click)="viewParentDetails(parent)"
                 >
@@ -502,6 +621,85 @@
               </div>
               <p class="text-sm text-slate-500 mb-2">No parents found</p>
               <p class="text-xs text-slate-400">Try adjusting your search</p>
+            </div>
+
+            <!-- Pagination and Table Info for Parents -->
+            <div
+              *ngIf="filteredParents.length > 0"
+              class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <!-- Table Info -->
+              <div class="text-sm text-slate-600">
+                Showing {{ (currentPage - 1) * pageSize + 1 }} to
+                {{ Math.min(currentPage * pageSize, totalItems) }} of {{ totalItems }} parents
+              </div>
+
+              <!-- Page Size Selector -->
+              <div class="flex items-center gap-2">
+                <label class="text-sm text-slate-600">Show:</label>
+                <select
+                  [(ngModel)]="pageSize"
+                  (change)="onPageSizeChange()"
+                  class="rounded-lg border border-slate-200 px-3 py-1 text-sm focus:border-emerald-400 focus:outline-none"
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+                <span class="text-sm text-slate-600">per page</span>
+              </div>
+
+              <!-- Pagination Controls -->
+              <div class="flex items-center gap-2">
+                <!-- Previous Button -->
+                <button
+                  type="button"
+                  [disabled]="currentPage === 1"
+                  (click)="previousPage()"
+                  class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+                >
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+
+                <!-- Page Numbers -->
+                <button
+                  *ngFor="let page of getPageNumbers()"
+                  type="button"
+                  (click)="goToPage(page)"
+                  [class]="
+                    page === currentPage
+                      ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500 text-white font-medium'
+                      : 'flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600'
+                  "
+                >
+                  {{ page }}
+                </button>
+
+                <!-- Next Button -->
+                <button
+                  type="button"
+                  [disabled]="currentPage === totalPages"
+                  (click)="nextPage()"
+                  class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+                >
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </section>

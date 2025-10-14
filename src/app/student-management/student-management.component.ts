@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent, NavItem } from '../shared/components/sidebar/sidebar.component';
 
@@ -83,9 +83,25 @@ interface ParentForm {
   templateUrl: './student-management.component.html',
   styleUrl: './student-management.component.css',
 })
-export class StudentManagementComponent {
+export class StudentManagementComponent implements OnInit {
+  // Make Math available in template
+  Math = Math;
+
   // Tab state
   activeTab: 'students' | 'parents' = 'students';
+
+  // Pagination state
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 1;
+  totalItems = 0;
+
+  // Sorting state
+  sortBy = 'firstName';
+  sortOrder: 'asc' | 'desc' = 'asc';
+
+  // Filter state
+  filters: { [key: string]: string } = {};
 
   // Steps configuration
   steps: Step[] = [
@@ -448,9 +464,84 @@ export class StudentManagementComponent {
   // Filtered data
   filteredStudents: StudentData[] = [...this.studentList];
   filteredParents: ParentData[] = [...this.parentList];
+  paginatedStudents: StudentData[] = [];
+  paginatedParents: ParentData[] = [];
 
-  constructor(private router: Router) {
-    this.updateFilteredData();
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    // Subscribe to query parameters
+    this.route.queryParams.subscribe((params) => {
+      this.parseQueryParams(params);
+      this.updateFilteredData();
+      this.updatePaginatedData();
+    });
+  }
+
+  parseQueryParams(params: any): void {
+    // Parse pagination parameters
+    this.currentPage = parseInt(params['page']) || 1;
+    this.pageSize = parseInt(params['pageSize']) || 10;
+
+    // Parse search parameter
+    this.searchQuery = params['search'] || '';
+
+    // Parse filter parameters
+    this.filters = {};
+    Object.keys(params).forEach((key) => {
+      if (key.startsWith('filters[') && key.endsWith(']')) {
+        const filterKey = key.substring(8, key.length - 1); // Remove 'filters[' and ']'
+        this.filters[filterKey] = params[key];
+      }
+    });
+
+    // Parse sorting parameters
+    this.sortBy = params['sort_by'] || 'firstName';
+    this.sortOrder = params['sort_order'] === 'desc' ? 'desc' : 'asc';
+
+    // Update filter dropdowns based on parsed filters
+    this.selectedClassFilter = this.filters['class'] || 'All';
+    this.selectedGenderFilter = this.filters['gender'] || 'All';
+    this.selectedStatusFilter = this.filters['status'] || 'All';
+  }
+
+  updateQueryParams(): void {
+    const queryParams: any = {};
+
+    // Add pagination params
+    if (this.currentPage > 1) {
+      queryParams.page = this.currentPage;
+    }
+    if (this.pageSize !== 10) {
+      queryParams.pageSize = this.pageSize;
+    }
+
+    // Add search param
+    if (this.searchQuery) {
+      queryParams.search = this.searchQuery;
+    }
+
+    // Add filter params
+    Object.keys(this.filters).forEach((key) => {
+      if (this.filters[key] && this.filters[key] !== 'All') {
+        queryParams[`filters[${key}]`] = this.filters[key];
+      }
+    });
+
+    // Add sorting params
+    if (this.sortBy !== 'firstName') {
+      queryParams.sort_by = this.sortBy;
+    }
+    if (this.sortOrder !== 'asc') {
+      queryParams.sort_order = this.sortOrder;
+    }
+
+    // Navigate with new query parameters
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParams,
+      queryParamsHandling: 'replace',
+    });
   }
 
   // Navigation methods
@@ -496,7 +587,10 @@ export class StudentManagementComponent {
   // Tab management
   switchTab(tab: 'students' | 'parents'): void {
     this.activeTab = tab;
+    this.currentPage = 1; // Reset pagination when switching tabs
     this.updateFilteredData();
+    this.updatePaginatedData();
+    this.updateQueryParams();
   }
 
   // Search and filter methods
@@ -518,6 +612,43 @@ export class StudentManagementComponent {
 
         return matchesSearch && matchesClass && matchesGender && matchesStatus;
       });
+
+      // Apply sorting
+      this.filteredStudents.sort((a, b) => {
+        let aValue: any, bValue: any;
+
+        switch (this.sortBy) {
+          case 'firstName':
+            aValue = a.firstName.toLowerCase();
+            bValue = b.firstName.toLowerCase();
+            break;
+          case 'lastName':
+            aValue = a.lastName.toLowerCase();
+            bValue = b.lastName.toLowerCase();
+            break;
+          case 'email':
+            aValue = a.email.toLowerCase();
+            bValue = b.email.toLowerCase();
+            break;
+          case 'enrollmentDate':
+            aValue = new Date(a.enrollmentDate);
+            bValue = new Date(b.enrollmentDate);
+            break;
+          case 'dateOfBirth':
+            aValue = new Date(a.dateOfBirth);
+            bValue = new Date(b.dateOfBirth);
+            break;
+          default:
+            aValue = a.firstName.toLowerCase();
+            bValue = b.firstName.toLowerCase();
+        }
+
+        if (aValue < bValue) return this.sortOrder === 'asc' ? -1 : 1;
+        if (aValue > bValue) return this.sortOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
+
+      this.totalItems = this.filteredStudents.length;
     } else {
       this.filteredParents = this.parentList.filter((parent) => {
         const matchesSearch =
@@ -530,7 +661,138 @@ export class StudentManagementComponent {
 
         return matchesSearch;
       });
+
+      // Apply sorting for parents
+      this.filteredParents.sort((a, b) => {
+        let aValue: any, bValue: any;
+
+        switch (this.sortBy) {
+          case 'firstName':
+            aValue = a.firstName.toLowerCase();
+            bValue = b.firstName.toLowerCase();
+            break;
+          case 'lastName':
+            aValue = a.lastName.toLowerCase();
+            bValue = b.lastName.toLowerCase();
+            break;
+          case 'email':
+            aValue = a.email.toLowerCase();
+            bValue = b.email.toLowerCase();
+            break;
+          default:
+            aValue = a.firstName.toLowerCase();
+            bValue = b.firstName.toLowerCase();
+        }
+
+        if (aValue < bValue) return this.sortOrder === 'asc' ? -1 : 1;
+        if (aValue > bValue) return this.sortOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
+
+      this.totalItems = this.filteredParents.length;
     }
+
+    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+
+    // Ensure current page is valid
+    if (this.currentPage > this.totalPages && this.totalPages > 0) {
+      this.currentPage = this.totalPages;
+    }
+  }
+
+  updatePaginatedData(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+
+    if (this.activeTab === 'students') {
+      this.paginatedStudents = this.filteredStudents.slice(startIndex, endIndex);
+    } else {
+      this.paginatedParents = this.filteredParents.slice(startIndex, endIndex);
+    }
+  }
+
+  onSearch(): void {
+    this.currentPage = 1; // Reset to first page when searching
+    this.updateFilteredData();
+    this.updatePaginatedData();
+    this.updateQueryParams();
+  }
+
+  onFilterChange(): void {
+    // Update filters object
+    this.filters = {
+      class: this.selectedClassFilter !== 'All' ? this.selectedClassFilter : '',
+      gender: this.selectedGenderFilter !== 'All' ? this.selectedGenderFilter : '',
+      status: this.selectedStatusFilter !== 'All' ? this.selectedStatusFilter : '',
+    };
+
+    this.currentPage = 1; // Reset to first page when filtering
+    this.updateFilteredData();
+    this.updatePaginatedData();
+    this.updateQueryParams();
+  }
+
+  onSort(field: string): void {
+    if (this.sortBy === field) {
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortBy = field;
+      this.sortOrder = 'asc';
+    }
+
+    this.updateFilteredData();
+    this.updatePaginatedData();
+    this.updateQueryParams();
+  }
+
+  onPageSizeChange(): void {
+    this.currentPage = 1; // Reset to first page when changing page size
+    this.updateFilteredData();
+    this.updatePaginatedData();
+    this.updateQueryParams();
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedData();
+      this.updateQueryParams();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.goToPage(this.currentPage - 1);
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.goToPage(this.currentPage + 1);
+    }
+  }
+
+  getPageNumbers(): number[] {
+    const pages: number[] = [];
+    const maxVisiblePages = 5;
+
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  }
+
+  getSortIcon(field: string): string {
+    if (this.sortBy !== field) return '↕️';
+    return this.sortOrder === 'asc' ? '↑' : '↓';
   }
 
   // Student Management Methods

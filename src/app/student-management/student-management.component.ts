@@ -138,6 +138,12 @@ export class StudentManagementComponent {
   currentEditingParent: ParentData | null = null;
   currentStudentForParent: StudentData | null = null;
 
+  // Details modal state
+  isStudentDetailsModalOpen = false;
+  isParentDetailsModalOpen = false;
+  selectedStudent: StudentData | null = null;
+  selectedParent: ParentData | null = null;
+
   // Multi-step form state
   studentFormStep = 1;
   parentFormStep = 1;
@@ -887,4 +893,78 @@ export class StudentManagementComponent {
   }
 
   trackByIndex = (_: number, item: unknown) => item;
+
+  // Student Details Modal Methods
+  viewStudentDetails(student: StudentData): void {
+    console.log('viewStudentDetails called with:', student);
+    this.selectedStudent = student;
+    this.isStudentDetailsModalOpen = true;
+    console.log('isStudentDetailsModalOpen set to:', this.isStudentDetailsModalOpen);
+  }
+
+  closeStudentDetailsModal(): void {
+    this.isStudentDetailsModalOpen = false;
+    this.selectedStudent = null;
+  }
+
+  // Parent Details Modal Methods
+  viewParentDetails(parent: ParentData): void {
+    console.log('viewParentDetails called with:', parent);
+    this.selectedParent = parent;
+    this.isParentDetailsModalOpen = true;
+    console.log('isParentDetailsModalOpen set to:', this.isParentDetailsModalOpen);
+  }
+
+  closeParentDetailsModal(): void {
+    this.isParentDetailsModalOpen = false;
+    this.selectedParent = null;
+  }
+
+  // Helper method to view student details from parent modal
+  viewStudentDetailsFromParent(student: StudentData): void {
+    this.closeParentDetailsModal();
+    this.viewStudentDetails(student);
+  }
+
+  // Helper methods for student details modal
+  getFormTeacher(classId: string): string {
+    // Mock data - replace with actual form teacher data
+    const formTeachers: { [key: string]: string } = {
+      class1: 'Mrs. Sarah Johnson',
+      class2: 'Mr. Michael Brown',
+      class3: 'Ms. Emily Davis',
+      class4: 'Mr. James Wilson',
+      class5: 'Mrs. Lisa Anderson',
+    };
+    return formTeachers[classId] || 'Not Assigned';
+  }
+
+  getStudentSubjects(classId: string): string[] {
+    // Mock data - replace with actual subject data based on class
+    const subjectsByClass: { [key: string]: string[] } = {
+      class1: [
+        'Mathematics',
+        'English Language',
+        'Basic Science',
+        'Social Studies',
+        'Computer Studies',
+      ],
+      class2: ['Mathematics', 'English Language', 'Physics', 'Chemistry', 'Biology', 'Geography'],
+      class3: ['Mathematics', 'English Language', 'Physics', 'Chemistry', 'Biology', 'Government'],
+      class4: ['Mathematics', 'English Language', 'Physics', 'Chemistry', 'Biology', 'Economics'],
+      class5: ['Mathematics', 'English Language', 'Physics', 'Chemistry', 'Biology', 'Literature'],
+    };
+    return subjectsByClass[classId] || ['No subjects assigned'];
+  }
+
+  getParentChildren(parentId: string): StudentData[] {
+    // Find all students that have this parent
+    const parentData = this.parentList.find((p) => p.id === parentId);
+    if (!parentData) return [];
+
+    // For now, we'll return the single student associated with this parent
+    // In a more complex system, you might have a many-to-many relationship
+    const student = this.studentList.find((s) => s.id === parentData.studentId);
+    return student ? [student] : [];
+  }
 }

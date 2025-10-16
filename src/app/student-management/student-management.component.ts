@@ -179,7 +179,7 @@ export class StudentManagementComponent implements OnInit {
   isMobileSidebarOpen = false;
 
   // Navigation items
-  readonly navItems: NavItem[] = [
+  navItems: NavItem[] = [
     { label: 'Dashboard', icon: 'dashboard', isActive: false },
     { label: 'School management', icon: 'management', isActive: false },
     { label: 'Payments', icon: 'payments', isActive: false },
@@ -558,6 +558,18 @@ export class StudentManagementComponent implements OnInit {
         break;
       case 'Students':
         this.router.navigate(['/student-management']);
+        break;
+      case 'Staffs':
+        this.router.navigate(['/staff-management']);
+        break;
+      case 'Payments':
+        this.router.navigate(['/payments']);
+        break;
+      case 'Transactions':
+        this.router.navigate(['/transactions']);
+        break;
+      case 'Settings':
+        this.router.navigate(['/settings']);
         break;
       default:
         console.log('Navigate to:', item.label);

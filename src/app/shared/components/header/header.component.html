@@ -1,0 +1,364 @@
+<header
+  class="sticky top-0 z-20 flex flex-col gap-4 bg-slate-100/95 px-4 py-3 backdrop-blur-lg lg:flex-row lg:items-center lg:justify-between lg:px-8 lg:py-3"
+>
+  <div class="flex w-full items-center gap-3 lg:w-auto">
+    <button
+      type="button"
+      class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500 lg:hidden"
+      aria-label="Toggle navigation"
+      (click)="onToggleMobileSidebar()"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.8"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </button>
+    <div class="relative flex-1 lg:w-96">
+      <svg
+        class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.6"
+          d="M11 19a8 8 0 100-16 8 8 0 000 16zm10 2l-3.35-3.35"
+        />
+      </svg>
+      <input
+        type="search"
+        placeholder="Search"
+        class="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-700 shadow-sm shadow-emerald-900/5 outline-none transition focus:border-emerald-400 focus:shadow-lg focus:shadow-emerald-900/10"
+      />
+    </div>
+  </div>
+
+  <div class="flex w-full items-center justify-between gap-3 lg:w-auto">
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500"
+        aria-label="Help center"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 12h.01M12 8a2 2 0 01.35 3.97l-.35.03"
+          />
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="relative flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500"
+        aria-label="Notifications"
+      >
+        <span class="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m3 5a3 3 0 003-3H9a3 3 0 003 3z"
+          />
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="hidden h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-500 lg:flex"
+        aria-label="Collapse sidebar"
+        (click)="onToggleSidebarCollapse()"
+      >
+        <svg
+          *ngIf="!isSidebarCollapsed"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <svg
+          *ngIf="isSidebarCollapsed"
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    </div>
+    <div class="relative">
+      <button
+        type="button"
+        class="flex items-center gap-3 rounded-2xl bg-white px-3 py-2 text-left shadow-sm shadow-emerald-900/5 transition hover:shadow-md"
+        (click)="onToggleUserMenu($event)"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="isUserMenuOpen"
+      >
+        <!-- Profile Image or Initials -->
+        <div class="h-11 w-11 rounded-xl overflow-hidden profile-image-container">
+          <img
+            *ngIf="userProfileImage"
+            [src]="userProfileImage"
+            [alt]="userName + ' profile picture'"
+            class="h-full w-full profile-image"
+          />
+          <div
+            *ngIf="!userProfileImage"
+            class="flex h-full w-full items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-white font-semibold"
+          >
+            {{ userInitials }}
+          </div>
+        </div>
+        <div class="hidden min-w-[140px] flex-1 flex-col text-sm text-slate-600 sm:flex">
+          <span class="font-semibold text-slate-800">{{ userName }}</span>
+          <span class="text-xs text-slate-500">{{ userRole }}</span>
+        </div>
+        <svg
+          class="hidden h-4 w-4 text-slate-400 transition sm:block"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+            d="M6 9l6 6 6-6"
+          />
+        </svg>
+      </button>
+
+      <div
+        *ngIf="isUserMenuOpen"
+        class="absolute right-0 mt-3 w-[19rem] max-w-[80vw] rounded-3xl border border-slate-100 bg-white/90 p-4 text-sm text-slate-600 shadow-2xl shadow-emerald-900/15 backdrop-blur-xl"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="flex items-start gap-3">
+          <!-- Profile Image or Initials in Dropdown -->
+          <div class="h-12 w-12 rounded-xl overflow-hidden profile-image-container">
+            <img
+              *ngIf="userProfileImage"
+              [src]="userProfileImage"
+              [alt]="userName + ' profile picture'"
+              class="h-full w-full profile-image"
+            />
+            <div
+              *ngIf="!userProfileImage"
+              class="flex h-full w-full items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 text-base font-semibold text-white"
+            >
+              {{ userInitials }}
+            </div>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-semibold text-slate-900">{{ userName }}</p>
+            <p class="text-xs text-slate-500">{{ userRole }} • {{ userEmail }}</p>
+            <span
+              class="mt-2 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wide text-emerald-600"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              Active member
+            </span>
+          </div>
+          <button
+            type="button"
+            class="hidden h-9 w-9 items-center justify-center rounded-xl border border-slate-200 text-slate-400 transition hover:border-emerald-200 hover:text-emerald-500 sm:flex"
+            aria-label="Close menu"
+            (click)="onCloseUserMenu()"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.6"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="mt-4 space-y-2">
+          <button
+            *ngFor="let action of userQuickActions; trackBy: trackByIndex"
+            type="button"
+            class="flex w-full items-start gap-3 rounded-2xl border border-slate-100 px-3.5 py-3 text-left transition hover:border-emerald-200 hover:bg-emerald-50/50 hover:text-emerald-700"
+            (click)="onQuickActionClick(action)"
+          >
+            <span
+              class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500"
+            >
+              <ng-container [ngSwitch]="action.icon">
+                <svg
+                  *ngSwitchCase="'profile'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <circle cx="12" cy="8" r="3" stroke-width="1.6" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M6 21v-1a6 6 0 0112 0v1"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'settings'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M10.325 4.317l.675-2.032a1 1 0 011.9 0l.675 2.032a1 1 0 00.95.69h2.137a1 1 0 01.588 1.81l-1.73 1.256a1 1 0 00-.364 1.118l.659 2.077a1 1 0 01-1.538 1.118l-1.73-1.256a1 1 0 00-1.176 0l-1.73 1.256a1 1 0 01-1.538-1.118l.659-2.077a1 1 0 00-.364-1.118L5.35 6.817A1 1 0 015.938 5h2.137a1 1 0 00.95-.683z"
+                  />
+                  <circle cx="12" cy="12" r="3" stroke-width="1.6" />
+                </svg>
+                <svg
+                  *ngSwitchCase="'notifications'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m3 5a3 3 0 003-3H9a3 3 0 003 3z"
+                  />
+                </svg>
+              </ng-container>
+            </span>
+            <span>
+              <span class="block text-sm font-semibold text-slate-800">{{ action.label }}</span>
+              <span class="mt-0.5 block text-xs text-slate-500">{{ action.description }}</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="mt-4 space-y-1.5 border-t border-slate-100 pt-4">
+          <button
+            *ngFor="let item of userMenuLinks; trackBy: trackByIndex"
+            type="button"
+            class="flex w-full items-start gap-3 rounded-2xl px-3 py-2.5 text-left transition"
+            [ngClass]="{
+              'bg-rose-50/80 text-rose-600 hover:bg-rose-50': item.isDestructive,
+              'hover:bg-slate-50 hover:text-emerald-600': !item.isDestructive
+            }"
+            (click)="item.label === 'Log out' ? onLogout() : onCloseUserMenu()"
+          >
+            <span
+              class="flex h-9 w-9 items-center justify-center rounded-xl"
+              [ngClass]="
+                item.isDestructive ? 'bg-rose-100 text-rose-500' : 'bg-slate-100 text-slate-500'
+              "
+            >
+              <ng-container [ngSwitch]="item.icon">
+                <svg
+                  *ngSwitchCase="'switch'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M4 9h5l-2-2m11 8h-5l2 2M4 15h5M15 9h5"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'billing'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <rect x="3" y="5" width="18" height="14" rx="3" ry="3" stroke-width="1.6" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M16 11h3m-11 0h2"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchCase="'support'"
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M18.364 5.636A9 9 0 105.636 18.364 9 9 0 0018.364 5.636zM9.172 9.172a4 4 0 015.656 0 4 4 0 010 5.656l-1.06 1.06"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M12 17h.01"
+                  />
+                </svg>
+                <svg
+                  *ngSwitchDefault
+                  class="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <circle cx="12" cy="8" r="3" stroke-width="1.6" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.6"
+                    d="M6 21v-1a6 6 0 0112 0v1"
+                  />
+                </svg>
+              </ng-container>
+            </span>
+            <span>
+              <span
+                class="block text-sm font-semibold text-slate-800"
+                [ngClass]="{ 'text-rose-600': item.isDestructive }"
+                >{{ item.label }}</span
+              >
+              <span
+                class="mt-0.5 block text-[0.7rem] text-slate-500"
+                [ngClass]="{ 'text-rose-400': item.isDestructive }"
+                >{{ item.helper }}</span
+              >
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

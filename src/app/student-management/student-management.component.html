@@ -1752,15 +1752,15 @@
   <!-- Student Details Modal -->
   <div
     *ngIf="isStudentDetailsModalOpen"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
     (click)="closeStudentDetailsModal()"
   >
     <div
-      class="relative w-full max-w-4xl max-h-[90vh] rounded-3xl border border-white/70 bg-white shadow-2xl shadow-emerald-900/10 mx-4 overflow-hidden"
+      class="relative w-full max-w-4xl max-h-[95vh] rounded-3xl border border-white/70 bg-white shadow-2xl shadow-emerald-900/10 overflow-hidden flex flex-col"
       (click)="$event.stopPropagation()"
     >
       <!-- Modal Header -->
-      <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+      <div class="flex-shrink-0 p-6 border-b border-gray-100 flex items-center justify-between">
         <div class="flex items-center gap-4">
           <div
             class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 text-white font-semibold text-lg"
@@ -1791,7 +1791,7 @@
       </div>
 
       <!-- Modal Content -->
-      <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+      <div class="flex-1 p-6 overflow-y-auto min-h-0">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Student Information -->
           <div class="bg-slate-50 rounded-2xl p-6">
@@ -1983,7 +1983,9 @@
       </div>
 
       <!-- Modal Footer -->
-      <div class="p-6 border-t border-gray-100 flex items-center justify-between bg-gray-50">
+      <div
+        class="flex-shrink-0 p-6 border-t border-gray-100 flex items-center justify-between bg-gray-50"
+      >
         <button type="button" class="secondary-button" (click)="closeStudentDetailsModal()">
           Close
         </button>
@@ -2015,15 +2017,15 @@
   <!-- Parent Details Modal -->
   <div
     *ngIf="isParentDetailsModalOpen"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
     (click)="closeParentDetailsModal()"
   >
     <div
-      class="relative w-full max-w-4xl max-h-[90vh] rounded-3xl border border-white/70 bg-white shadow-2xl shadow-emerald-900/10 mx-4 overflow-hidden"
+      class="relative w-full max-w-4xl max-h-[95vh] rounded-3xl border border-white/70 bg-white shadow-2xl shadow-emerald-900/10 overflow-hidden flex flex-col"
       (click)="$event.stopPropagation()"
     >
       <!-- Modal Header -->
-      <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+      <div class="flex-shrink-0 p-6 border-b border-gray-100 flex items-center justify-between">
         <div class="flex items-center gap-4">
           <div
             class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-white font-semibold text-lg"
@@ -2054,7 +2056,7 @@
       </div>
 
       <!-- Modal Content -->
-      <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+      <div class="flex-1 p-6 overflow-y-auto min-h-0">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Parent Information -->
           <div class="bg-purple-50 rounded-2xl p-6">
@@ -2192,7 +2194,9 @@
         </div>
 
         <!-- Modal Footer -->
-        <div class="p-6 border-t border-gray-100 flex items-center justify-end bg-gray-50">
+        <div
+          class="flex-shrink-0 p-6 border-t border-gray-100 flex items-center justify-end bg-gray-50"
+        >
           <button type="button" class="secondary-button" (click)="closeParentDetailsModal()">
             Close
           </button>

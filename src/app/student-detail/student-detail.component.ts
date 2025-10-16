@@ -84,12 +84,12 @@ export class StudentDetailComponent implements OnInit {
   // Sidebar properties
   navItems: NavItem[] = [
     { label: 'Dashboard', icon: 'dashboard', isActive: false },
-    { label: 'Student Management', icon: 'students', isActive: true },
-    { label: 'Staff Management', icon: 'staffs', isActive: false },
-    { label: 'Session Management', icon: 'management', isActive: false },
+    { label: 'School management', icon: 'management', isActive: false },
     { label: 'Payments', icon: 'payments', isActive: false },
-    { label: 'Transactions', icon: 'transactions', isActive: false },
+    { label: 'Staffs', icon: 'staffs', isActive: false },
+    { label: 'Students', icon: 'students', isActive: true },
     { label: 'Settings', icon: 'settings', isActive: false },
+    { label: 'Transactions', icon: 'transactions', isActive: false },
   ];
 
   isSidebarCollapsed = false;
@@ -116,17 +116,113 @@ export class StudentDetailComponent implements OnInit {
     },
     {
       id: 'STU002',
-      firstName: 'Jane',
-      middleName: 'Elizabeth',
-      lastName: 'Smith',
+      firstName: 'Sarah',
+      middleName: 'Grace',
+      lastName: 'Johnson',
       gender: 'Female',
-      email: 'jane.smith@email.com',
+      email: 'sarah.johnson@email.com',
       address: '456 Oak Avenue, Ikoyi',
       state: 'Lagos',
       country: 'Nigeria',
       regNo: 'REG2024002',
-      dateOfBirth: '2009-08-22',
+      dateOfBirth: '2010-08-22',
+      classId: 'class1',
+      status: 'Active',
+      enrollmentDate: '2024-09-01',
+    },
+    {
+      id: 'STU003',
+      firstName: 'David',
+      middleName: 'Emmanuel',
+      lastName: 'Wilson',
+      gender: 'Male',
+      email: 'david.wilson@email.com',
+      address: '789 Pine Road, Lekki',
+      state: 'Lagos',
+      country: 'Nigeria',
+      regNo: 'REG2024003',
+      dateOfBirth: '2010-03-10',
       classId: 'class2',
+      status: 'Active',
+      enrollmentDate: '2024-09-01',
+    },
+    {
+      id: 'STU004',
+      firstName: 'Mercy',
+      middleName: 'Chioma',
+      lastName: 'Okeke',
+      gender: 'Female',
+      email: 'mercy.okeke@email.com',
+      address: '321 Cedar Street, Surulere',
+      state: 'Lagos',
+      country: 'Nigeria',
+      regNo: 'REG2024004',
+      dateOfBirth: '2010-12-05',
+      classId: 'class2',
+      status: 'Active',
+      enrollmentDate: '2024-09-01',
+    },
+    {
+      id: 'STU005',
+      firstName: 'Ahmed',
+      middleName: 'Tunde',
+      lastName: 'Ibrahim',
+      gender: 'Male',
+      email: 'ahmed.ibrahim@email.com',
+      address: '654 Elm Street, Yaba',
+      state: 'Lagos',
+      country: 'Nigeria',
+      regNo: 'REG2024005',
+      dateOfBirth: '2010-07-18',
+      classId: 'class3',
+      status: 'Active',
+      enrollmentDate: '2024-09-01',
+    },
+    {
+      id: 'STU006',
+      firstName: 'Blessing',
+      middleName: 'Ada',
+      lastName: 'Okafor',
+      gender: 'Female',
+      email: 'blessing.okafor@email.com',
+      address: '987 Birch Avenue, Ikeja',
+      state: 'Lagos',
+      country: 'Nigeria',
+      regNo: 'REG2024006',
+      dateOfBirth: '2010-09-30',
+      classId: 'class3',
+      status: 'Active',
+      enrollmentDate: '2024-09-01',
+    },
+    {
+      id: 'STU007',
+      firstName: 'Victor',
+      middleName: 'Chinedu',
+      lastName: 'Eze',
+      gender: 'Male',
+      email: 'victor.eze@email.com',
+      address: '246 Maple Street, Gbagada',
+      state: 'Lagos',
+      country: 'Nigeria',
+      regNo: 'REG2024007',
+      dateOfBirth: '2010-11-12',
+      classId: 'class4',
+      status: 'Active',
+      enrollmentDate: '2024-09-01',
+    },
+    {
+      id: 'STU008',
+      firstName: 'Faith',
+      middleName: 'Ngozi',
+      lastName: 'Uche',
+      gender: 'Female',
+      email: 'faith.uche@email.com',
+      address: '135 Willow Drive, Ojodu',
+      state: 'Lagos',
+      country: 'Nigeria',
+      regNo: 'REG2024008',
+      dateOfBirth: '2010-04-25',
+      classId: 'class4',
       status: 'Active',
       enrollmentDate: '2024-09-01',
     },
@@ -135,9 +231,9 @@ export class StudentDetailComponent implements OnInit {
   parentList: ParentData[] = [
     {
       id: 'PAR001',
-      firstName: 'Michael',
+      firstName: 'Robert',
       lastName: 'Doe',
-      email: 'michael.doe@email.com',
+      email: 'robert.doe@email.com',
       phone: '+234-801-234-5678',
       relationship: 'Father',
       address: '123 Main Street, Victoria Island',
@@ -147,15 +243,75 @@ export class StudentDetailComponent implements OnInit {
     },
     {
       id: 'PAR002',
-      firstName: 'Sarah',
+      firstName: 'Mary',
       lastName: 'Doe',
-      email: 'sarah.doe@email.com',
-      phone: '+234-802-234-5678',
+      email: 'mary.doe@email.com',
+      phone: '+234-802-345-6789',
       relationship: 'Mother',
       address: '123 Main Street, Victoria Island',
       occupation: 'Teacher',
       status: 'Active',
       studentId: 'STU001',
+    },
+    {
+      id: 'PAR003',
+      firstName: 'James',
+      lastName: 'Johnson',
+      email: 'james.johnson@email.com',
+      phone: '+234-803-456-7890',
+      relationship: 'Father',
+      address: '456 Oak Avenue, Ikoyi',
+      occupation: 'Doctor',
+      status: 'Active',
+      studentId: 'STU002',
+    },
+    {
+      id: 'PAR004',
+      firstName: 'Peter',
+      lastName: 'Wilson',
+      email: 'peter.wilson@email.com',
+      phone: '+234-804-567-8901',
+      relationship: 'Father',
+      address: '789 Pine Road, Lekki',
+      occupation: 'Lawyer',
+      status: 'Active',
+      studentId: 'STU003',
+    },
+    {
+      id: 'PAR005',
+      firstName: 'Grace',
+      lastName: 'Okeke',
+      email: 'grace.okeke@email.com',
+      phone: '+234-805-678-9012',
+      relationship: 'Mother',
+      address: '321 Cedar Street, Surulere',
+      occupation: 'Nurse',
+      status: 'Active',
+      studentId: 'STU004',
+    },
+    {
+      id: 'PAR006',
+      firstName: 'Mohammed',
+      lastName: 'Ibrahim',
+      email: 'mohammed.ibrahim@email.com',
+      phone: '+234-806-789-0123',
+      relationship: 'Father',
+      address: '654 Elm Street, Yaba',
+      occupation: 'Businessman',
+      status: 'Active',
+      studentId: 'STU005',
+    },
+    {
+      id: 'PAR007',
+      firstName: 'Fatima',
+      lastName: 'Ibrahim',
+      email: 'fatima.ibrahim@email.com',
+      phone: '+234-807-890-1234',
+      relationship: 'Mother',
+      address: '654 Elm Street, Yaba',
+      occupation: 'Civil Servant',
+      status: 'Active',
+      studentId: 'STU005',
     },
   ];
 
@@ -183,6 +339,25 @@ export class StudentDetailComponent implements OnInit {
         'Social Studies',
         'Computer Studies',
       ],
+    },
+    {
+      id: 'class3',
+      className: 'JSS 3A',
+      formTeacher: 'Mrs. Jennifer Davis',
+      subjects: [
+        'Mathematics',
+        'English Language',
+        'Physics',
+        'Chemistry',
+        'Biology',
+        'Government',
+      ],
+    },
+    {
+      id: 'class4',
+      className: 'JSS 3B',
+      formTeacher: 'Mr. David Wilson',
+      subjects: ['Mathematics', 'English Language', 'Physics', 'Chemistry', 'Biology', 'Economics'],
     },
   ];
 
@@ -374,19 +549,23 @@ export class StudentDetailComponent implements OnInit {
   }
 
   navigateToItem(item: NavItem): void {
+    // Update active states
+    this.navItems.forEach((navItem) => (navItem.isActive = false));
+    item.isActive = true;
+
     // Handle navigation based on the item
     switch (item.label) {
       case 'Dashboard':
         this.router.navigate(['/dashboard']);
         break;
-      case 'Student Management':
+      case 'School management':
+        this.router.navigate(['/session-management']);
+        break;
+      case 'Students':
         this.router.navigate(['/student-management']);
         break;
-      case 'Staff Management':
+      case 'Staffs':
         this.router.navigate(['/staff-management']);
-        break;
-      case 'Session Management':
-        this.router.navigate(['/session-management']);
         break;
       case 'Payments':
         this.router.navigate(['/payments']);
@@ -397,6 +576,8 @@ export class StudentDetailComponent implements OnInit {
       case 'Settings':
         this.router.navigate(['/settings']);
         break;
+      default:
+        console.log('Navigate to:', item.label);
     }
   }
 
@@ -408,5 +589,12 @@ export class StudentDetailComponent implements OnInit {
   logout(): void {
     // Handle logout logic
     console.log('Logout clicked');
+  }
+
+  printReport(): void {
+    // Handle print report logic
+    console.log('Print report for student:', this.student?.firstName, this.student?.lastName);
+    // You can implement actual print functionality here
+    window.print();
   }
 }

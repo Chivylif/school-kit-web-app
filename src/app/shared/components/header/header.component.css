@@ -1,0 +1,17 @@
+/* Header component styles */
+/* Styles are applied inline using Tailwind CSS classes */
+
+/* Profile image styling */
+.profile-image-container {
+  transition: all 0.3s ease-in-out;
+}
+
+.profile-image-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.15);
+}
+
+.profile-image {
+  object-fit: cover;
+  object-position: center;
+}

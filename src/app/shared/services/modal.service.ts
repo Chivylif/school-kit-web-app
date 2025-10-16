@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export interface ModalState {
   isOpen: boolean;
-  type: 'login' | 'register' | null;
+  type: 'login' | 'register' | 'profile' | null;
   data?: any;
 }
 
@@ -31,6 +31,14 @@ export class ModalService {
     this.modalStateSubject.next({
       isOpen: true,
       type: 'register',
+      data,
+    });
+  }
+
+  openProfileModal(data?: any) {
+    this.modalStateSubject.next({
+      isOpen: true,
+      type: 'profile',
       data,
     });
   }

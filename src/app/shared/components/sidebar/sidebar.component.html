@@ -227,28 +227,6 @@
   >
     <button
       type="button"
-      class="flex items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 text-sm font-semibold text-emerald-50 transition hover:bg-white/20"
-      [ngClass]="{ 'justify-center px-0': isSidebarCollapsed }"
-      (click)="onCloseMobileSidebar()"
-    >
-      <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
-        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1.6"
-            d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 12h.01M12 8a2 2 0 01.35 3.97l-.35.03"
-          />
-        </svg>
-      </span>
-      <div *ngIf="!isSidebarCollapsed" class="flex flex-col text-left">
-        <span class="text-sm font-semibold text-white">Help center</span>
-        <span class="text-xs text-emerald-100/70">We're here to assist</span>
-      </div>
-    </button>
-
-    <button
-      type="button"
       class="flex items-center gap-3 rounded-2xl bg-emerald-500/20 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-500/30"
       [ngClass]="{ 'justify-center px-0': isSidebarCollapsed }"
       (click)="onCloseMobileSidebar()"
